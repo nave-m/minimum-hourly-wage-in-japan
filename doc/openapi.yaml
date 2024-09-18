@@ -1,0 +1,118 @@
+openapi: 3.0.3
+info:
+  title: 日本の最低賃金 (時給)
+  description: |-
+    最低賃金と改定予定
+  version: 1.0.0
+externalDocs:
+  description: GitHub 
+  url: https://github.com/nave-m/minimum-hourly-wage-in-japan
+
+paths:
+  /api/v1/minimumHourlyWages/valuesWithNextRevisions:
+    get:
+      description: ある日付における最低賃金と改定予定
+      operationId: getV1MinimumHourlyWages
+      parameters:
+        - in: query
+          name: date
+          schema:
+            type: string
+            format: date
+          description: ISO8601の日付
+          example: 2024-09-30
+        - in: query
+          name: prefectureCodes
+          schema:
+            type: array
+            items: 
+              type: string
+          description: JIS X0401 都道府県コード (2桁・ゼロ埋め)
+          example: '01' 
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetMinimumHourlyWagesValuesWithNextRevisionsResponseBody' 
+        '400':
+          description: BAD REQUEST
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestResponseBody'
+
+components:
+  schemas:
+    GetMinimumHourlyWagesValuesWithNextRevisionsResponseBody:
+      type: object
+      properties:
+        minimumHourlyWagesAndNextRevisions:
+          type: array
+          items:
+            $ref: '#/components/schemas/MinimumHourlyWageValueWithNextRevision'
+      required:
+        - minimumHourlyWagesAndNextRevisions
+    MinimumHourlyWageValueWithNextRevision:
+      type: object
+      properties:
+        hourlyWage: 
+          type: integer
+          description: 最低賃金 (時給) 単位は円
+          example: 960
+        prefectureCode:
+          type: string
+          description: JIS X0401 都道府県コード (2桁・ゼロ埋め)
+          example: 01
+        next:
+          type: object
+          description: 改定予定
+          properties:
+            hourlyWage: 
+              type: integer
+              description: 最低賃金 (時給) 単位は円
+              example: 1010
+            effectiveDate:
+              type: string
+              format: date
+              description: |
+                * 発効日 
+                * ISO8601の日付
+              example: 2024-10-01
+            publicationDate:
+              type: string
+              format: date
+              description: |
+                * 公示日 
+                  * nullの場合は公示されていない (変更になる可能性がある)
+                * ISO8601の日付
+              nullable: true
+              example: 2024-08-30
+          required:
+            - hourlyWage
+            - effectiveDate
+          nullable: true
+      required:
+        - hourlyWage
+        - prefectureCode
+    
+    BadRequestResponseBody:
+      type: object
+      properties:
+        violations:
+          type: array
+          items:
+            $ref: '#/components/schemas/BadRequestViolation'
+      required:
+        - violations
+    BadRequestViolation:
+      type: object
+      properties:
+        propertyName:
+          type: string
+        message:
+          type: string
+      required:
+        - propertyName
+        - message
