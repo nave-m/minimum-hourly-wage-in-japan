@@ -1,18 +1,16 @@
 openapi: 3.0.3
 info:
-  title: 日本の最低賃金 (時給)
-  description: |-
-    最低賃金と改定予定
+  title: 日本の最低賃金
   version: 1.0.0
 externalDocs:
   description: GitHub 
   url: https://github.com/nave-m/minimum-hourly-wage-in-japan
 
 paths:
-  /api/v1/minimumHourlyWages/valuesWithNextRevisions:
+  /api/v1/minimumHourlyWageViews:
     get:
-      description: ある日付における最低賃金と改定予定
-      operationId: getV1MinimumHourlyWages
+      description: ある日付における最低賃金(時給)と改定予定
+      operationId: getV1MinimumHourlyWageViews
       parameters:
         - in: query
           name: date
@@ -21,6 +19,7 @@ paths:
             format: date
           description: ISO8601の日付
           example: 2024-09-30
+          required: true
         - in: query
           name: prefectureCodes
           schema:
@@ -29,13 +28,14 @@ paths:
               type: string
           description: JIS X0401 都道府県コード (2桁・ゼロ埋め)
           example: '01' 
+          required: false
       responses:
         '200':
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GetMinimumHourlyWagesValuesWithNextRevisionsResponseBody' 
+                $ref: '#/components/schemas/GetMinimumHourlyWagesViewsResponseBody' 
         '400':
           description: BAD REQUEST
           content:
@@ -45,17 +45,18 @@ paths:
 
 components:
   schemas:
-    GetMinimumHourlyWagesValuesWithNextRevisionsResponseBody:
+    GetMinimumHourlyWagesViewsResponseBody:
       type: object
       properties:
-        minimumHourlyWagesAndNextRevisions:
+        minimumHourlyWagesViews:
           type: array
           items:
-            $ref: '#/components/schemas/MinimumHourlyWageValueWithNextRevision'
+            $ref: '#/components/schemas/MinimumHourlyWageView'
       required:
         - minimumHourlyWagesAndNextRevisions
-    MinimumHourlyWageValueWithNextRevision:
+    MinimumHourlyWageView:
       type: object
+      description: ある日付における最低賃金と改定予定
       properties:
         hourlyWage: 
           type: integer
