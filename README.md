@@ -28,3 +28,51 @@
     - 8月の厚生労働書の答申結果が出揃った段階で最低賃金のマスタを追加
     - 都道府県労働局から官報で公示されたら最低賃金のマスタを更新
     - 最低賃金のマスタはリポジトリにコミット
+
+# RestfulAPI
+
+[API仕様](./doc/openapi.yaml)
+
+RestfulAPIサーバの起動
+
+```
+npm install
+npm run restful
+```
+
+環境変数 
+
+- RESTFUL_API_PORT : リクエストを受け付けるポート番号 (省略した場合は3000)
+
+TLSが必要な場合は別途リバースプロキシを用意してください。
+
+# ディレクトリ構成
+
+クリーンアーキテクチャに倣ってます
+
+- core
+    - 外部ライブラリやデータソースに依存しない純粋なリソース定義
+- usecase
+    - Service : データアクセスのI/F
+    - Interactor : InputをOutputに変換するI/Fで、すべてのユースケースはこれを実装する
+- adapter/local
+    - Serviceに対するインメモリでの実装
+        - 現状では外部データソース(RDBなど)を使っていないため    
+- adapter/{外部ライブラリ}
+    - usecase層のI/Fに対する実装
+- adapter/restful
+    - 外部物理仕様(RESTfulAPI)に対する実装
+        - フレームワークはExpress
+    - RestfulAdapter : Interactorと1:1で実装する
+    - index.ts : サーバ起動のエントリポイント
+
+# 補足
+
+- [インターネット版官報](https://kanpou.npb.go.jp/)
+    - 直近90日間は無料で閲覧できる
+    - 毎年8月末から9月にかけての改定時期にどの都道府県が公示したかを確認
+    - 官報には発効日が掲載されないため、後述の厚生労働省のまとめもしくは各都道府県の労働局の報道発表資料を参照
+- [地域別最低賃金の全国一覧](https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/koyou_roudou/roudoukijun/minimumichiran/index.html)
+    - 厚生労働省の最低賃金のまとめ
+    - 2023年の8月末から9月末にかけては官報公示がされるとこのページが更新されていた
+    - 2024年の改定でも同様の対応がされるかは不明

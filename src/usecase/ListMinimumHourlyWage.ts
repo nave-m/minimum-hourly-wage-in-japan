@@ -1,30 +1,29 @@
 import { asNonEmptyListOrNull, NonEmptyList } from "../core/NonEmptyList";
 import { PrefectureCode, prefectureCodeFromText } from "../core/PrefectureCode";
-import { DateProvider } from "./DateProvider";
+import { DateService } from "./DateService";
 import { MinimumHourlyWageRevisionService } from "./MinimumHourlyWageRevisionService";
 import { InvalidArgumentError, UnexpectedError, UseCaseError, Violation } from "./UseCaseError";
 import { TermBetween } from "../core/Term";
 import { MinimumHourlyWageRevision } from "../core/MinimumHourlyWageRevision";
-import { AbstractInteractor } from "./AbstractInteractor";
+import { Interactor } from "./Interactor";
 import { LocalDate } from "../core/LocalDate";
 
-export class ListMinimumHourlyWageInteractor extends AbstractInteractor<ListMinimumHourlyWageInput,ListMinimumHourlyWageOutput> {
-    private readonly dateProvider: DateProvider;
+export class ListMinimumHourlyWageInteractor implements Interactor<ListMinimumHourlyWageInput,ListMinimumHourlyWageOutput> {
+    private readonly dateService: DateService;
     private readonly minimumHourlyWageRevisionService: MinimumHourlyWageRevisionService;
     
     constructor(props: {
-        dateProvider: DateProvider;
+        dateService: DateService;
         minimumHourlyWageRevisionService: MinimumHourlyWageRevisionService;
     }) {
-        super();
-        this.dateProvider = props.dateProvider;
+        this.dateService = props.dateService;
         this.minimumHourlyWageRevisionService = props.minimumHourlyWageRevisionService;
     }
 
     async invoke(input: ListMinimumHourlyWageInput): Promise<ListMinimumHourlyWageOutput> {
         try {
             const validatedInput = this.validate(input);
-            const targetDate = validatedInput.date ? validatedInput.date : this.dateProvider.currentDate();
+            const targetDate = validatedInput.date ? validatedInput.date : this.dateService.currentDate();
             const [effectiveRevisions, nextRevisions] = await Promise.all([
                 this.getEffectiveRevisions(targetDate, validatedInput.prefectureCodes),
                 this.getNextRevisions(targetDate, validatedInput.prefectureCodes),
@@ -61,11 +60,12 @@ export class ListMinimumHourlyWageInteractor extends AbstractInteractor<ListMini
     }
     private validateDate(date: Date | null): LocalDate | null {
         try {
-            if (date != null) {
-                return LocalDate.fromYMD(date.getFullYear(), date.getMonth() + 1, date.getDate())
-            } else {
+            if (date == null) {
                 return null;
-            }
+            } else if (!Number.isNaN(date.getTime())) {
+                return LocalDate.fromYMD(date.getFullYear(), date.getMonth() + 1, date.getDate())
+            } 
+            throw Error();
         } catch {
             throw new InvalidArgumentError({
                 violations: [

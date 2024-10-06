@@ -10,14 +10,14 @@ export enum PrefectureCode {
     Tochigi = '09',
     Gunnma = '10',
     Saitama = '11',
-    Chiga = '12',
+    Chiba = '12',
     Tokyo = '13',
-    Knanagawa = '14',
+    Kanagawa = '14',
     Niigata = '15',
     Toyama = '16',
     Ishikawa = '17',
     Fukui = '18',
-    Yanamashi = '19',
+    Yamanashi = '19',
     Nagano = '20',
     Gifu = '21',
     Shizuoka = '22',
@@ -30,7 +30,7 @@ export enum PrefectureCode {
     Nara = '29',
     Wakayama = '30',
     Tottori = '31',
-    Shimame = '32',
+    Shimane = '32',
     Okayama = '33',
     Hiroshima = '34',
     Yamaguchi = '35',
@@ -61,14 +61,14 @@ export const prefectureCodeFromText = (code: string): PrefectureCode => {
         case '09': return PrefectureCode.Tochigi;
         case '10': return PrefectureCode.Gunnma;
         case '11': return PrefectureCode.Saitama;
-        case '12': return PrefectureCode.Chiga;
+        case '12': return PrefectureCode.Chiba;
         case '13': return PrefectureCode.Tokyo;
-        case '14': return PrefectureCode.Knanagawa;
+        case '14': return PrefectureCode.Kanagawa;
         case '15': return PrefectureCode.Niigata;
         case '16': return PrefectureCode.Toyama;
         case '17': return PrefectureCode.Ishikawa;
         case '18': return PrefectureCode.Fukui;
-        case '19': return PrefectureCode.Yanamashi;
+        case '19': return PrefectureCode.Yamanashi;
         case '20': return PrefectureCode.Nagano;
         case '21': return PrefectureCode.Gifu;
         case '22': return PrefectureCode.Shizuoka;
@@ -81,7 +81,7 @@ export const prefectureCodeFromText = (code: string): PrefectureCode => {
         case '29': return PrefectureCode.Nara;
         case '30': return PrefectureCode.Wakayama;
         case '31': return PrefectureCode.Tottori;
-        case '32': return PrefectureCode.Shimame;
+        case '32': return PrefectureCode.Shimane;
         case '33': return PrefectureCode.Okayama;
         case '34': return PrefectureCode.Hiroshima;
         case '35': return PrefectureCode.Yamaguchi;

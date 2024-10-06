@@ -2,7 +2,7 @@ import { LocalDate } from "../core/LocalDate";
 import { MinimumHourlyWageRevision } from "../core/MinimumHourlyWageRevision";
 import { PrefectureCode } from "../core/PrefectureCode";
 import { TermBetween } from "../core/Term";
-import { DateProvider } from "./DateProvider";
+import { DateService } from "./DateService";
 import { ListMinimumHourlyWageInput, ListMinimumHourlyWageInteractor, ListMinimumHourlyWageOutput, ValidatedInput } from "./ListMinimumHourlyWage";
 import { MinimumHourlyWageRevisionService } from "./MinimumHourlyWageRevisionService";
 import { InvalidArgumentError } from "./UseCaseError";
@@ -46,7 +46,7 @@ describe('ListMinimumHourlyWageInteractor', () => {
         ])('正常な値であれば、ValidatedInputを返す %s', (_, input, expected) => {
             expect(
                 new ListMinimumHourlyWageInteractor({
-                    dateProvider: createDateProvider(),
+                    dateService: createDateService(),
                     minimumHourlyWageRevisionService: createMinimumHourlyWageRevisionService(),
                 }).validate(input)
             ).toStrictEqual(expected);
@@ -54,7 +54,7 @@ describe('ListMinimumHourlyWageInteractor', () => {
         it('日付が不正な値の場合、InvalidArgumentErrorを投げる', () => {
             expect(() => {
                 new ListMinimumHourlyWageInteractor({
-                    dateProvider: createDateProvider(),
+                    dateService: createDateService(),
                     minimumHourlyWageRevisionService: createMinimumHourlyWageRevisionService(),
                 }).validate(
                     new ListMinimumHourlyWageInput({
@@ -69,7 +69,7 @@ describe('ListMinimumHourlyWageInteractor', () => {
         it('都道府県コードが不正な値の場合、InvalidArgumentErrorを投げる', () => {
             expect(() => {
                 new ListMinimumHourlyWageInteractor({
-                    dateProvider: createDateProvider(),
+                    dateService: createDateService(),
                     minimumHourlyWageRevisionService: createMinimumHourlyWageRevisionService(),
                 }).validate(
                     new ListMinimumHourlyWageInput({
@@ -87,7 +87,7 @@ describe('ListMinimumHourlyWageInteractor', () => {
     });
     describe('invoke', () => {
         it('日付指定あり・都道府県絞り込みあり', async () => {
-            const dateProvider = createDateProvider();
+            const dateProvider = createDateService();
             const minimumHourlyWageRevisionService = createMinimumHourlyWageRevisionService();
             minimumHourlyWageRevisionService.list = jest.fn()
                 .mockResolvedValueOnce([
@@ -104,7 +104,7 @@ describe('ListMinimumHourlyWageInteractor', () => {
                 ]);
             expect(
                 new ListMinimumHourlyWageInteractor({
-                    dateProvider,
+                    dateService: dateProvider,
                     minimumHourlyWageRevisionService,
                 }).invoke(new ListMinimumHourlyWageInput({date: new Date('2024-10-03'), prefectureCodes: ['01', '02', '03']}))
             ).resolves.toStrictEqual(
@@ -132,7 +132,7 @@ describe('ListMinimumHourlyWageInteractor', () => {
             });
         });
         it('日付指定なし・都道府県絞り込みなし', async () => {
-            const dateProvider = createDateProvider();
+            const dateProvider = createDateService();
             dateProvider.currentDate = jest.fn().mockReturnValueOnce(LocalDate.fromISO8601('2045-12-31'));
             const minimumHourlyWageRevisionService = createMinimumHourlyWageRevisionService();
             minimumHourlyWageRevisionService.list = jest.fn()
@@ -140,7 +140,7 @@ describe('ListMinimumHourlyWageInteractor', () => {
             // 日付指定あり・都道府県絞り込みありのケースでOutputのパターン網羅はしたので、このケースは時給の照会に現在の日付が使われることだけを確認する
             expect(
                 new ListMinimumHourlyWageInteractor({
-                    dateProvider,
+                    dateService: dateProvider,
                     minimumHourlyWageRevisionService,
                 }).invoke(new ListMinimumHourlyWageInput({date: null, prefectureCodes: null}))
             ).resolves.toStrictEqual(
@@ -182,7 +182,7 @@ describe('ListMinimumHourlyWageInteractor', () => {
     });
 });
 
-const createDateProvider = (): DateProvider => {
+const createDateService = (): DateService => {
     return {
         currentDate: jest.fn(),
     };
