@@ -1,7 +1,7 @@
 import { LocalDate } from "../../core/LocalDate";
-import { DateProviderImpl } from "./DateProviderImpl";
+import { DateServiceImpl } from "./DateServiceImpl";
 
-describe('DateProviderImpl', () => {
+describe('DateServiceImpl', () => {
     afterEach(() => {
         jest.restoreAllMocks();
     });
@@ -13,7 +13,7 @@ describe('DateProviderImpl', () => {
             expect(now.getUTCDate()).toBe(30);
             jest.spyOn(global, 'Date')
                 .mockImplementation(() => now);
-            expect(new DateProviderImpl().currentDate()).toStrictEqual(LocalDate.fromISO8601('2024-10-01'));
+            expect(new DateServiceImpl().currentDate()).toStrictEqual(LocalDate.fromISO8601('2024-10-01'));
         });
     });
 })

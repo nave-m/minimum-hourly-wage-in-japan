@@ -13,14 +13,14 @@ describe('prefectureCodeFromText', () => {
         ['09', PrefectureCode.Tochigi],
         ['10', PrefectureCode.Gunnma],
         ['11', PrefectureCode.Saitama],
-        ['12', PrefectureCode.Chiga],
+        ['12', PrefectureCode.Chiba],
         ['13', PrefectureCode.Tokyo],
-        ['14', PrefectureCode.Knanagawa],
+        ['14', PrefectureCode.Kanagawa],
         ['15', PrefectureCode.Niigata],
         ['16', PrefectureCode.Toyama],
         ['17', PrefectureCode.Ishikawa],
         ['18', PrefectureCode.Fukui],
-        ['19', PrefectureCode.Yanamashi],
+        ['19', PrefectureCode.Yamanashi],
         ['20', PrefectureCode.Nagano],
         ['21', PrefectureCode.Gifu],
         ['22', PrefectureCode.Shizuoka],
@@ -33,7 +33,7 @@ describe('prefectureCodeFromText', () => {
         ['29', PrefectureCode.Nara],
         ['30', PrefectureCode.Wakayama],
         ['31', PrefectureCode.Tottori],
-        ['32', PrefectureCode.Shimame],
+        ['32', PrefectureCode.Shimane],
         ['33', PrefectureCode.Okayama],
         ['34', PrefectureCode.Hiroshima],
         ['35', PrefectureCode.Yamaguchi],
@@ -52,7 +52,7 @@ describe('prefectureCodeFromText', () => {
     ])('JIS X 0401の文字列からEnumに変換できる %s', (code, expected) => {
         expect(prefectureCodeFromText(code)).toBe(expected);
     });
-    it('JIS X 0401の文字列出ない場合はエラー', () => {
+    it('JIS X 0401の文字列でない場合はエラー', () => {
         expect(() => {
             prefectureCodeFromText('00')
         }).toThrow(Error);

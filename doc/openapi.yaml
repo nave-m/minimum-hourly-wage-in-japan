@@ -48,7 +48,7 @@ components:
     GetMinimumHourlyWagesViewsResponseBody:
       type: object
       properties:
-        minimumHourlyWagesViews:
+        minimumHourlyWageViews:
           type: array
           items:
             $ref: '#/components/schemas/MinimumHourlyWageView'
