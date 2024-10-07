@@ -1,7 +1,15 @@
 import request from 'supertest';
-import app from './app';
+import express from 'express';
+import { configure } from './app';
+import { LoggingService } from '../../usecase/LoggingService';
 
 describe('RESTfulAPI', () => {
+    const loggingService: LoggingService = {
+        info: jest.fn(),
+        error: jest.fn(),
+    }
+    const app = configure({app: express(), loggingService});
+
     describe('GET /api/v1/minimumHourlyWageViews', () => {
         it('正常系 日付を指定するとその時点における最低時給と将来の改定情報を返す', async () => {
             const response = await request(app).get('/api/v1/minimumHourlyWageViews?date=2024-10-05');
