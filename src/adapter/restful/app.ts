@@ -1,24 +1,27 @@
-import express from 'express';
+
 import { ListMinimumHourlyWageInteractor } from '../../usecase/ListMinimumHourlyWage';
 import { DateServiceImpl } from '../date-fns/DateServiceImpl';
 import { MinimumHourlyWageRevisionServiceImpl } from '../local/MinimumHourlyWageRevisionServiceImpl';
 import { InMemoryDataSource } from '../local/InMemoryDataSource';
 import { GetMinimumHourlyWageViews } from './GetMinimumHourlyWageViews';
+import { Application } from 'express';
+import { LoggingService } from '../../usecase/LoggingService';
 
-const app = express();
-app.disable('x-powered-by');
-
-const getMinimumHourlyWageViews = new GetMinimumHourlyWageViews(
-    new ListMinimumHourlyWageInteractor({
-        dateService: new DateServiceImpl(),
-        minimumHourlyWageRevisionService: new MinimumHourlyWageRevisionServiceImpl({
-            revisions: InMemoryDataSource.load(),
+export const configure = (props: {
+    app: Application;
+    loggingService: LoggingService;
+}): Application => {
+    const getMinimumHourlyWageViews = new GetMinimumHourlyWageViews({
+        loggingService: props.loggingService,
+        interactor: new ListMinimumHourlyWageInteractor({
+            dateService: new DateServiceImpl(),
+            minimumHourlyWageRevisionService: new MinimumHourlyWageRevisionServiceImpl({
+                revisions: InMemoryDataSource.load(),
+            }),
         }),
-    })
-);
-
-app.get('/api/v1/minimumHourlyWageViews', async (req, res) => {
-    await getMinimumHourlyWageViews.invoke(req, res);
-});
-
-export default app;
+    });
+    props.app.get('/api/v1/minimumHourlyWageViews', async (req, res) => {
+        await getMinimumHourlyWageViews.invoke(req, res);
+    });
+    return props.app;
+};

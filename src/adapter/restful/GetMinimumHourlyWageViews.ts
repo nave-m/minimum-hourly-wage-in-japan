@@ -3,10 +3,16 @@ import { ListMinimumHourlyWageInteractor, ListMinimumHourlyWageInput, MinimumHou
 import { RestfulAdapter } from "./RestfulAdapter";
 import { LocalDate } from "../../core/LocalDate";
 import { InvalidArgumentError } from "../../usecase/UseCaseError";
+import { LoggingService } from "../../usecase/LoggingService";
 
 export class GetMinimumHourlyWageViews extends RestfulAdapter<ListMinimumHourlyWageInput, ListMinimumHourlyWageOutput> {
-    constructor(protected readonly interactor: ListMinimumHourlyWageInteractor) {
-        super();
+    protected readonly interactor: ListMinimumHourlyWageInteractor;
+    constructor(props: {
+        interactor: ListMinimumHourlyWageInteractor;
+        loggingService: LoggingService;
+    }) {
+        super({loggingService: props.loggingService});
+        this.interactor = props.interactor;
     }
     protected createInput(req: Request): ListMinimumHourlyWageInput {
         return new ListMinimumHourlyWageInput({
