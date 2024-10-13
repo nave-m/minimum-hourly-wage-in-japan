@@ -16,12 +16,10 @@ export class WinstonLoggingService implements LoggingService {
             transports: [new winston.transports.Console()],
         });
     }
-    /* eslint-disable @typescript-eslint/no-explicit-any */
-    info(message: any): void {
+    info(message: unknown): void {
         this.delegate.info(message);
     }
-    /* eslint-disable @typescript-eslint/no-explicit-any */
-    error(message: any): void {
+    error(message: unknown): void {
         this.delegate.error(message);
     }
 }
