@@ -1,11 +1,11 @@
-import { asNonEmptyListOrNull, NonEmptyList } from "../core/NonEmptyList";
-import { PrefectureCode, prefectureCodeFromText } from "../core/PrefectureCode";
+import { asNonEmptyListOrNull, NonEmptyList } from "@minimum-hourly-wage-in-japan/core/src/NonEmptyList";
+import { PrefectureCode, prefectureCodeFromText } from "@minimum-hourly-wage-in-japan/core/src/PrefectureCode";
 import { MinimumHourlyWageRevisionService } from "./MinimumHourlyWageRevisionService";
 import { InvalidArgumentError, UnexpectedError, UseCaseError, Violation } from "./UseCaseError";
-import { TermBetween } from "../core/Term";
-import { MinimumHourlyWageRevision } from "../core/MinimumHourlyWageRevision";
+import { TermBetween } from "@minimum-hourly-wage-in-japan/core/src/Term";
+import { MinimumHourlyWageRevision } from "@minimum-hourly-wage-in-japan/core/src/MinimumHourlyWageRevision";
 import { Interactor } from "./Interactor";
-import { LocalDate } from "../core/LocalDate";
+import { LocalDate } from "@minimum-hourly-wage-in-japan/core/src/LocalDate";
 
 export class ListMinimumHourlyWageInteractor implements Interactor<ListMinimumHourlyWageInput,ListMinimumHourlyWageOutput> {
     private readonly minimumHourlyWageRevisionService: MinimumHourlyWageRevisionService;
@@ -106,7 +106,7 @@ export class ListMinimumHourlyWageInteractor implements Interactor<ListMinimumHo
         // 発効日が前年の10月1日から指定日まで取得するが、
         // 10月以降は同一都道府県で改定前後の最低賃金の定義が重複することがある
         // なので都道府県ごとに最低賃金定義をまとめる
-        const candidatesAsMap = (await this.minimumHourlyWageRevisionService.list({
+        const candidatesAsMap: Map<PrefectureCode, NonEmptyList<MinimumHourlyWageRevision>> = (await this.minimumHourlyWageRevisionService.list({
             effectiveDate: new TermBetween({since: LocalDate.fromYMD(targetDate.year -1, 10, 1), until: targetDate}),
             prefectureCodes: prefectureCodes,
         }))

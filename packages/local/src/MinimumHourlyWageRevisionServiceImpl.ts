@@ -1,5 +1,5 @@
-import { MinimumHourlyWageRevision } from "../../core/MinimumHourlyWageRevision";
-import { ListProps, MinimumHourlyWageRevisionService } from "../../usecase/MinimumHourlyWageRevisionService";
+import { MinimumHourlyWageRevision } from "@minimum-hourly-wage-in-japan/core/src/MinimumHourlyWageRevision";
+import { ListProps, MinimumHourlyWageRevisionService } from "@minimum-hourly-wage-in-japan/usecase/src/MinimumHourlyWageRevisionService";
 
 export class MinimumHourlyWageRevisionServiceImpl implements MinimumHourlyWageRevisionService {
     private revisions: MinimumHourlyWageRevision[];

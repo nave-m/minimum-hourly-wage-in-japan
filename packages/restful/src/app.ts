@@ -1,10 +1,10 @@
 
-import { ListMinimumHourlyWageInteractor } from '../../usecase/ListMinimumHourlyWage';
-import { MinimumHourlyWageRevisionServiceImpl } from '../local/MinimumHourlyWageRevisionServiceImpl';
-import { InMemoryDataSource } from '../local/InMemoryDataSource';
+import { ListMinimumHourlyWageInteractor } from '@minimum-hourly-wage-in-japan/usecase/src/ListMinimumHourlyWage';
+import { MinimumHourlyWageRevisionServiceImpl } from '@minimum-hourly-wage-in-japan/local/src/MinimumHourlyWageRevisionServiceImpl';
+import { InMemoryDataSource } from '@minimum-hourly-wage-in-japan/local/src/InMemoryDataSource';
 import { GetMinimumHourlyWageViews } from './GetMinimumHourlyWageViews';
 import { Application } from 'express';
-import { LoggingService } from '../../usecase/LoggingService';
+import { LoggingService } from '@minimum-hourly-wage-in-japan/usecase/src/LoggingService';
 
 export const configure = (props: {
     app: Application;

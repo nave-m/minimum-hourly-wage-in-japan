@@ -1,0 +1,13 @@
+{
+  "name": "@minimum-hourly-wage-in-japan/winston",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {},
+  "author": "Masato Watanabe",
+  "license": "MIT",
+  "description": "",
+  "dependencies": {
+    "winston": "^3.15.0"
+  }
+}

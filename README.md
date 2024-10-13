@@ -48,19 +48,21 @@ TLSが必要な場合は別途リバースプロキシを用意してくださ�
 
 # ディレクトリ構成
 
-クリーンアーキテクチャに倣ってます
+npm workspacesを使ったモノレポ構成。
+
+クリーンアーキテクチャに倣ってます。
 
 - core
     - 外部ライブラリやデータソースに依存しない純粋なリソース定義
 - usecase
     - Service : データアクセスのI/F
     - Interactor : InputをOutputに変換するI/Fで、すべてのユースケースはこれを実装する
-- adapter/local
+- local
     - Serviceに対するインメモリでの実装
         - 現状では外部データソース(RDBなど)を使っていないため    
-- adapter/{外部ライブラリ}
-    - usecase層のI/Fに対する実装
-- adapter/restful
+- winston
+    - LoggingServiceの実装
+- restful
     - 外部物理仕様(RESTfulAPI)に対する実装
         - フレームワークはExpress
     - RestfulAdapter : Interactorと1:1で実装する

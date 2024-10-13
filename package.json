@@ -4,33 +4,30 @@
   "description": "日本の最低賃金(時給)",
   "main": "index.js",
   "scripts": {
-    "build": "tsc -p .",
+    "build": "tsc --build",
     "lint": "eslint .",
     "test": "jest",
-    "restful": "NODE_ENV=production ts-node src/adapter/restful/index.ts"
+    "restful": "npm start -w packages/restful"
   },
+  "workspaces": [
+    "packages/core",
+    "packages/usecase",
+    "packages/local",
+    "packages/winston",
+    "packages/restful"
+  ],
   "author": "Masato Watanabe",
   "license": "MIT",
+  "private": true,
   "devDependencies": {
     "@eslint/js": "^9.10.0",
-    "@swc/core": "^1.7.26",
-    "@swc/helpers": "^0.5.13",
     "@types/eslint__js": "^8.42.3",
-    "@types/express": "^5.0.0",
     "@types/jest": "^29.5.12",
-    "@types/node": "^22.7.4",
-    "@types/supertest": "^6.0.2",
     "eslint": "^9.10.0",
     "jest": "^29.7.0",
     "regenerator-runtime": "^0.14.1",
-    "supertest": "^7.0.0",
     "ts-jest": "^29.2.5",
-    "ts-node": "^10.9.2",
     "typescript": "^5.5.4",
     "typescript-eslint": "^8.4.0"
-  },
-  "dependencies": {
-    "express": "^4.21.0",
-    "winston": "^3.15.0"
   }
 }

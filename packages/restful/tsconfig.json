@@ -1,0 +1,15 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "rootDir": "src",
+  },
+  "references": [
+    { "path": "../core" },
+    { "path": "../usecase" },
+    { "path": "../local" },
+    { "path": "../winston" }
+  ],
+  "ts-node": {
+    "swc": true
+  }
+}

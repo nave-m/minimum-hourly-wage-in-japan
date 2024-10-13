@@ -1,6 +1,6 @@
 import express from 'express';
 import { configure } from './app';
-import { WinstonLoggingService } from '../winston/WinstonLoggingService';
+import { WinstonLoggingService } from '@minimum-hourly-wage-in-japan/winston/src/WinstonLoggingService';
 
 const getPort = (mayBePortText: string | undefined): number => {
     const DEFAULT_PORT = 3000;
