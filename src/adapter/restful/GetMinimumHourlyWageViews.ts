@@ -35,13 +35,11 @@ export class GetMinimumHourlyWageViews extends RestfulAdapter<ListMinimumHourlyW
             })
         });
     }
-    private extractDate(req: Request): Date {
+    private extractDate(req: Request): Date | null{
         try {
             const mayBeDate = req.query.date as string | string[] | undefined;
             if (mayBeDate == null) {
-                throw new InvalidArgumentError({
-                    violations: [{property: 'date', message: '日付は必須です'}]
-                });
+                return null;
             } else if (Array.isArray(mayBeDate)) {
                 throw new InvalidArgumentError({
                     violations: [{property: 'date', message: '日付は文字列で指定してください'}]
@@ -53,7 +51,6 @@ export class GetMinimumHourlyWageViews extends RestfulAdapter<ListMinimumHourlyW
             if (error instanceof InvalidArgumentError) {
                 throw error;
             } else {
-                // クエリの中身がParsedQs
                 throw new InvalidArgumentError({
                     violations: [{property: 'date', message: '日付は文字列で指定してください'}]
                 });
@@ -75,10 +72,11 @@ export class GetMinimumHourlyWageViews extends RestfulAdapter<ListMinimumHourlyW
         } catch (error: unknown) {
             if (error instanceof InvalidArgumentError) {
                 throw error;
-            } 
-            throw new InvalidArgumentError({
-                violations: [{property: 'prefectureCodes', message: '都道府県コードは配列で指定してください'}]
-            });
+            } else {
+                throw new InvalidArgumentError({
+                    violations: [{property: 'prefectureCodes', message: '都道府県コードは配列で指定してください'}]
+                });
+            }
         }
     }
     private presentISO8601(localDate: LocalDate): string {

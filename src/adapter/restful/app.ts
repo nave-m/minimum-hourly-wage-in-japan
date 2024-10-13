@@ -1,6 +1,5 @@
 
 import { ListMinimumHourlyWageInteractor } from '../../usecase/ListMinimumHourlyWage';
-import { DateServiceImpl } from '../date-fns/DateServiceImpl';
 import { MinimumHourlyWageRevisionServiceImpl } from '../local/MinimumHourlyWageRevisionServiceImpl';
 import { InMemoryDataSource } from '../local/InMemoryDataSource';
 import { GetMinimumHourlyWageViews } from './GetMinimumHourlyWageViews';
@@ -14,7 +13,6 @@ export const configure = (props: {
     const getMinimumHourlyWageViews = new GetMinimumHourlyWageViews({
         loggingService: props.loggingService,
         interactor: new ListMinimumHourlyWageInteractor({
-            dateService: new DateServiceImpl(),
             minimumHourlyWageRevisionService: new MinimumHourlyWageRevisionServiceImpl({
                 revisions: InMemoryDataSource.load(),
             }),

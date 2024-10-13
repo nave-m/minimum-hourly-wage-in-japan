@@ -13,22 +13,22 @@ describe('ListMinimumHourlyWageInteractor', () => {
             [
                 '最小構成(都道府県コード指定なし)', 
                 new ListMinimumHourlyWageInput({
-                    date: null,
+                    date: new Date('2024-10-04'),
                     prefectureCodes: null,
                 }),
                 new ValidatedInput({
-                    date: null,
+                    date: LocalDate.fromISO8601('2024-10-04'),
                     prefectureCodes: null,
                 }),
             ],
             [
                 '最小構成(都道府県コードが空)', 
                 new ListMinimumHourlyWageInput({
-                    date: null,
+                    date: new Date('2024-10-04'),
                     prefectureCodes: [],
                 }),
                 new ValidatedInput({
-                    date: null,
+                    date: LocalDate.fromISO8601('2024-10-04'),
                     prefectureCodes: null,
                 }),
             ],
@@ -46,47 +46,48 @@ describe('ListMinimumHourlyWageInteractor', () => {
         ])('正常な値であれば、ValidatedInputを返す %s', (_, input, expected) => {
             expect(
                 new ListMinimumHourlyWageInteractor({
-                    dateService: createDateService(),
                     minimumHourlyWageRevisionService: createMinimumHourlyWageRevisionService(),
                 }).validate(input)
             ).toStrictEqual(expected);
         });
-        it('日付が不正な値の場合、InvalidArgumentErrorを投げる', () => {
-            expect(() => {
-                new ListMinimumHourlyWageInteractor({
-                    dateService: createDateService(),
-                    minimumHourlyWageRevisionService: createMinimumHourlyWageRevisionService(),
-                }).validate(
-                    new ListMinimumHourlyWageInput({
-                        date: new Date(''),
-                        prefectureCodes: null,
-                    })
-                );
-            }).toThrow(
-                new InvalidArgumentError({violations: [{property:'date', message: '日付として解釈できません'}]})
-            );
-        });
-        it('都道府県コードが不正な値の場合、InvalidArgumentErrorを投げる', () => {
-            expect(() => {
-                new ListMinimumHourlyWageInteractor({
-                    dateService: createDateService(),
-                    minimumHourlyWageRevisionService: createMinimumHourlyWageRevisionService(),
-                }).validate(
-                    new ListMinimumHourlyWageInput({
-                        date: null,
-                        prefectureCodes: ['00', '01', '48'],
-                    })
-                );
-            }).toThrow(
+        it.each([
+            [
+                '日付が指定されない',
+                new ListMinimumHourlyWageInput({
+                    date: null,
+                    prefectureCodes: null,
+                }),
+                new InvalidArgumentError({violations: [{property:'date', message: '日付として解釈できません'}]}),
+            ],
+            [
+                '日付が不正な値',
+                new ListMinimumHourlyWageInput({
+                    date: new Date(''),
+                    prefectureCodes: null,
+                }),
+                new InvalidArgumentError({violations: [{property:'date', message: '日付として解釈できません'}]}),
+            ],
+            [
+                '都道府県コードが不正な値',
+                new ListMinimumHourlyWageInput({
+                    date: null,
+                    prefectureCodes: ['00', '01', '48'],
+                }),
                 new InvalidArgumentError({violations: [
                     {property: `prefectureCodes[0]`, message: '都道府県コードとして解釈できません'},
                     {property: `prefectureCodes[2]`, message: '都道府県コードとして解釈できません'},
-                ]})
-            );
+                ]}),
+            ]
+        ])('入力の成約違反があればInvalidArgumentErrorを投げる %s', (_, input, expectedError) => {
+            expect(() => {
+                new ListMinimumHourlyWageInteractor({
+                    minimumHourlyWageRevisionService: createMinimumHourlyWageRevisionService(),
+                }).validate(input);
+            }).toThrow(expectedError);
         });
     });
     describe('invoke', () => {
-        it('日付指定あり・都道府県絞り込みあり', async () => {
+        it('改定時期・都道府県絞り込みあり', async () => {
             const dateProvider = createDateService();
             const minimumHourlyWageRevisionService = createMinimumHourlyWageRevisionService();
             minimumHourlyWageRevisionService.list = jest.fn()
@@ -104,7 +105,6 @@ describe('ListMinimumHourlyWageInteractor', () => {
                 ]);
             expect(
                 new ListMinimumHourlyWageInteractor({
-                    dateService: dateProvider,
                     minimumHourlyWageRevisionService,
                 }).invoke(new ListMinimumHourlyWageInput({date: new Date('2024-10-03'), prefectureCodes: ['01', '02', '03']}))
             ).resolves.toStrictEqual(
@@ -131,31 +131,24 @@ describe('ListMinimumHourlyWageInteractor', () => {
                 prefectureCodes: [PrefectureCode.Hokkaido, PrefectureCode.Aomori, PrefectureCode.Iwate],
             });
         });
-        it('日付指定なし・都道府県絞り込みなし', async () => {
-            const dateProvider = createDateService();
-            dateProvider.currentDate = jest.fn().mockReturnValueOnce(LocalDate.fromISO8601('2045-12-31'));
+        it('改定時期外・都道府県絞り込みなし', async () => {
             const minimumHourlyWageRevisionService = createMinimumHourlyWageRevisionService();
             minimumHourlyWageRevisionService.list = jest.fn()
                 .mockResolvedValueOnce([]);
-            // 日付指定あり・都道府県絞り込みありのケースでOutputのパターン網羅はしたので、このケースは時給の照会に現在の日付が使われることだけを確認する
             expect(
                 new ListMinimumHourlyWageInteractor({
-                    dateService: dateProvider,
                     minimumHourlyWageRevisionService,
-                }).invoke(new ListMinimumHourlyWageInput({date: null, prefectureCodes: null}))
+                }).invoke(new ListMinimumHourlyWageInput({date: new Date('2045-12-31'), prefectureCodes: null}))
             ).resolves.toStrictEqual(
                 new ListMinimumHourlyWageOutput({minimumHourlyWages: []})
             );
-            // Inputで日付を指定していないので、現在の日付の取得をする
-            expect(dateProvider.currentDate).toHaveBeenCalledTimes(1);
+            // 12月なので改定の照会はせず、現在の時給の照会が１回だけされる
             expect(minimumHourlyWageRevisionService.list).toHaveBeenCalledTimes(1);
-            // 現在の時給の照会する
             expect(minimumHourlyWageRevisionService.list).toHaveBeenNthCalledWith(1, {
                 // 前年の10月1日から現在の日付まで
                 effectiveDate: new TermBetween({since: LocalDate.fromISO8601('2044-10-01'), until: LocalDate.fromISO8601('2045-12-31')}),
                 prefectureCodes: null,
             });
-            // 12月なので改定の照会はしない
         });
     });
     describe('getTermOfNextRevision', () => {
