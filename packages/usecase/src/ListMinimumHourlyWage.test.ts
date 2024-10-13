@@ -1,8 +1,7 @@
-import { LocalDate } from "../core/LocalDate";
-import { MinimumHourlyWageRevision } from "../core/MinimumHourlyWageRevision";
-import { PrefectureCode } from "../core/PrefectureCode";
-import { TermBetween } from "../core/Term";
-import { DateService } from "./DateService";
+import { LocalDate } from "@minimum-hourly-wage-in-japan/core/src/LocalDate";
+import { MinimumHourlyWageRevision } from "@minimum-hourly-wage-in-japan/core/src/MinimumHourlyWageRevision";
+import { PrefectureCode } from "@minimum-hourly-wage-in-japan/core/src/PrefectureCode";
+import { TermBetween } from "@minimum-hourly-wage-in-japan/core/src/Term";
 import { ListMinimumHourlyWageInput, ListMinimumHourlyWageInteractor, ListMinimumHourlyWageOutput, ValidatedInput } from "./ListMinimumHourlyWage";
 import { MinimumHourlyWageRevisionService } from "./MinimumHourlyWageRevisionService";
 import { InvalidArgumentError } from "./UseCaseError";
@@ -88,7 +87,6 @@ describe('ListMinimumHourlyWageInteractor', () => {
     });
     describe('invoke', () => {
         it('改定時期・都道府県絞り込みあり', async () => {
-            const dateProvider = createDateService();
             const minimumHourlyWageRevisionService = createMinimumHourlyWageRevisionService();
             minimumHourlyWageRevisionService.list = jest.fn()
                 .mockResolvedValueOnce([
@@ -117,7 +115,6 @@ describe('ListMinimumHourlyWageInteractor', () => {
                 })
             );
             // Inputで日付を指定したので、現在の日付の取得は実施されない
-            expect(dateProvider.currentDate).toHaveBeenCalledTimes(0);
             expect(minimumHourlyWageRevisionService.list).toHaveBeenCalledTimes(2);
             // 現在の時給の照会する
             expect(minimumHourlyWageRevisionService.list).toHaveBeenNthCalledWith(1, {
@@ -174,12 +171,6 @@ describe('ListMinimumHourlyWageInteractor', () => {
         });
     });
 });
-
-const createDateService = (): DateService => {
-    return {
-        currentDate: jest.fn(),
-    };
-};
 
 const createMinimumHourlyWageRevisionService = (): MinimumHourlyWageRevisionService => {
     return {

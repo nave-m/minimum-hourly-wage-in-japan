@@ -1,7 +1,7 @@
 import request from 'supertest';
 import express from 'express';
 import { configure } from './app';
-import { LoggingService } from '../../usecase/LoggingService';
+import { LoggingService } from '@minimum-hourly-wage-in-japan/usecase/src/LoggingService';
 
 describe('RESTfulAPI', () => {
     const loggingService: LoggingService = {

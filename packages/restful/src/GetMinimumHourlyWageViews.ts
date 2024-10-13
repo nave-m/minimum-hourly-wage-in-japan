@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
-import { ListMinimumHourlyWageInteractor, ListMinimumHourlyWageInput, MinimumHourlyWage, ListMinimumHourlyWageOutput } from "../../usecase/ListMinimumHourlyWage";
+import { ListMinimumHourlyWageInteractor, ListMinimumHourlyWageInput, MinimumHourlyWage, ListMinimumHourlyWageOutput } from "@minimum-hourly-wage-in-japan/usecase/src/ListMinimumHourlyWage";
 import { RestfulAdapter } from "./RestfulAdapter";
-import { LocalDate } from "../../core/LocalDate";
-import { InvalidArgumentError } from "../../usecase/UseCaseError";
-import { LoggingService } from "../../usecase/LoggingService";
+import { LocalDate } from "@minimum-hourly-wage-in-japan/core/src/LocalDate";
+import { InvalidArgumentError } from "@minimum-hourly-wage-in-japan/usecase/src/UseCaseError";
+import { LoggingService } from "@minimum-hourly-wage-in-japan/usecase/src/LoggingService";
 
 export class GetMinimumHourlyWageViews extends RestfulAdapter<ListMinimumHourlyWageInput, ListMinimumHourlyWageOutput> {
     protected readonly interactor: ListMinimumHourlyWageInteractor;

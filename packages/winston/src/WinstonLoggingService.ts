@@ -1,5 +1,5 @@
 import winston from 'winston';
-import { LoggingService } from '../../usecase/LoggingService';
+import { LoggingService } from '@minimum-hourly-wage-in-japan/usecase/src/LoggingService';
 
 export class WinstonLoggingService implements LoggingService {
     readonly delegate: winston.Logger

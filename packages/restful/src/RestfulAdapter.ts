@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
-import { InvalidArgumentError, UnexpectedError } from "../../usecase/UseCaseError";
-import { Interactor } from "../../usecase/Interactor";
-import { LoggingService } from "../../usecase/LoggingService";
+import { InvalidArgumentError, UnexpectedError } from "@minimum-hourly-wage-in-japan/usecase/src/UseCaseError";
+import { Interactor } from "@minimum-hourly-wage-in-japan/usecase/src/Interactor";
+import { LoggingService } from "@minimum-hourly-wage-in-japan/usecase/src/LoggingService";
 
 export abstract class RestfulAdapter<Input,Output> {
     protected readonly loggingService: LoggingService;

@@ -1,8 +1,8 @@
-import { LocalDate } from "../../core/LocalDate";
-import { MinimumHourlyWageRevision } from "../../core/MinimumHourlyWageRevision";
-import { fromListUnsafe } from "../../core/NonEmptyList";
-import { PrefectureCode } from "../../core/PrefectureCode";
-import { TermBetween, TermSince, TermUntil } from "../../core/Term";
+import { LocalDate } from "@minimum-hourly-wage-in-japan/core/src/LocalDate";
+import { MinimumHourlyWageRevision } from "@minimum-hourly-wage-in-japan/core/src/MinimumHourlyWageRevision";
+import { fromListUnsafe } from "@minimum-hourly-wage-in-japan/core/src/NonEmptyList";
+import { PrefectureCode } from "@minimum-hourly-wage-in-japan/core/src/PrefectureCode";
+import { TermBetween, TermSince, TermUntil } from "@minimum-hourly-wage-in-japan/core/src/Term";
 import { MinimumHourlyWageRevisionServiceImpl } from "./MinimumHourlyWageRevisionServiceImpl";
 
 describe('MinimumHourlyWageQueryImpl', ()=> {

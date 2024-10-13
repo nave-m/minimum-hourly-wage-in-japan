@@ -1,6 +1,6 @@
-import { LocalDate } from "../../core/LocalDate";
-import { MinimumHourlyWageRevision } from "../../core/MinimumHourlyWageRevision";
-import { PrefectureCode } from "../../core/PrefectureCode";
+import { LocalDate } from "@minimum-hourly-wage-in-japan/core/src/LocalDate";
+import { MinimumHourlyWageRevision } from "@minimum-hourly-wage-in-japan/core/src/MinimumHourlyWageRevision";
+import { PrefectureCode } from "@minimum-hourly-wage-in-japan/core/src/PrefectureCode";
 
 export class InMemoryDataSource {
     static load(): MinimumHourlyWageRevision[] {

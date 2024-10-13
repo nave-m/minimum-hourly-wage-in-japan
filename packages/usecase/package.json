@@ -1,0 +1,11 @@
+{
+  "name": "@minimum-hourly-wage-in-japan/usecase",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "devDependencies": {},
+  "scripts": {},
+  "author": "Masato Watanabe",
+  "license": "MIT",
+  "description": ""
+}

@@ -1,0 +1,25 @@
+{
+  "name": "@minimum-hourly-wage-in-japan/restful",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "start": "ts-node src/index.ts"
+  },
+  "author": "Masato Watanabe",
+  "license": "MIT",
+  "description": "",
+  "dependencies": {
+    "express": "^4.21.1"
+  },
+  "devDependencies": {
+    "@swc/core": "^1.7.35",
+    "@swc/helpers": "^0.5.13",
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.7.5",
+    "@types/supertest": "^6.0.2",
+    "regenerator-runtime": "^0.14.1",
+    "supertest": "^7.0.0",
+    "ts-node": "^10.9.2"
+  }
+}
