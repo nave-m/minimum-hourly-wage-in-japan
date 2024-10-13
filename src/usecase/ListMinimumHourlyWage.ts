@@ -1,6 +1,5 @@
 import { asNonEmptyListOrNull, NonEmptyList } from "../core/NonEmptyList";
 import { PrefectureCode, prefectureCodeFromText } from "../core/PrefectureCode";
-import { DateService } from "./DateService";
 import { MinimumHourlyWageRevisionService } from "./MinimumHourlyWageRevisionService";
 import { InvalidArgumentError, UnexpectedError, UseCaseError, Violation } from "./UseCaseError";
 import { TermBetween } from "../core/Term";
@@ -9,24 +8,20 @@ import { Interactor } from "./Interactor";
 import { LocalDate } from "../core/LocalDate";
 
 export class ListMinimumHourlyWageInteractor implements Interactor<ListMinimumHourlyWageInput,ListMinimumHourlyWageOutput> {
-    private readonly dateService: DateService;
     private readonly minimumHourlyWageRevisionService: MinimumHourlyWageRevisionService;
     
     constructor(props: {
-        dateService: DateService;
         minimumHourlyWageRevisionService: MinimumHourlyWageRevisionService;
     }) {
-        this.dateService = props.dateService;
         this.minimumHourlyWageRevisionService = props.minimumHourlyWageRevisionService;
     }
 
     async invoke(input: ListMinimumHourlyWageInput): Promise<ListMinimumHourlyWageOutput> {
         try {
             const validatedInput = this.validate(input);
-            const targetDate = validatedInput.date ? validatedInput.date : this.dateService.currentDate();
             const [effectiveRevisions, nextRevisions] = await Promise.all([
-                this.getEffectiveRevisions(targetDate, validatedInput.prefectureCodes),
-                this.getNextRevisions(targetDate, validatedInput.prefectureCodes),
+                this.getEffectiveRevisions(validatedInput.date, validatedInput.prefectureCodes),
+                this.getNextRevisions(validatedInput.date, validatedInput.prefectureCodes),
             ]);
             return new ListMinimumHourlyWageOutput({
                 minimumHourlyWages: effectiveRevisions.map((effectiveRevision) => {
@@ -58,20 +53,28 @@ export class ListMinimumHourlyWageInteractor implements Interactor<ListMinimumHo
             prefectureCodes: this.validatePrefectureCodes(input.prefectureCodes),
         });
     }
-    private validateDate(date: Date | null): LocalDate | null {
+    private validateDate(date: Date | null): LocalDate {
         try {
             if (date == null) {
-                return null;
+                throw new InvalidArgumentError({
+                    violations: [
+                        {property:'date', message: '日付は必須です'}
+                    ]
+                });
             } else if (!Number.isNaN(date.getTime())) {
                 return LocalDate.fromYMD(date.getFullYear(), date.getMonth() + 1, date.getDate())
             } 
             throw Error();
-        } catch {
-            throw new InvalidArgumentError({
-                violations: [
-                    {property:'date', message: '日付として解釈できません'}
-                ]
-            });
+        } catch (error: unknown) {
+            if (error instanceof InvalidArgumentError) {
+                throw error;
+            } else {
+                throw new InvalidArgumentError({
+                    violations: [
+                        {property:'date', message: '日付として解釈できません'}
+                    ]
+                });
+            }
         }
     }
     private validatePrefectureCodes(prefectureCodes: string[] | null): NonEmptyList<PrefectureCode> | null { 
@@ -163,10 +166,10 @@ export class ListMinimumHourlyWageInput {
 }
 
 export class ValidatedInput {
-    readonly date: LocalDate | null;
+    readonly date: LocalDate;
     readonly prefectureCodes: NonEmptyList<PrefectureCode> | null;
     constructor(props: {
-        date: LocalDate | null;
+        date: LocalDate;
         prefectureCodes: NonEmptyList<PrefectureCode> | null;
     }) {
         this.date = props.date;
