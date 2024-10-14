@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+import "google/protobuf/wrappers.proto";
+import "google/type/date.proto";
+
+package jp.wage.api.v1;
+
+service MinimumHourlyWageService {
+    rpc ListViews(ListViewsRequest) returns (ListViewsResponse) {
+        option idempotency_level = NO_SIDE_EFFECTS;
+    };
+}
+
+message ListViewsRequest {
+    // 必須
+    google.type.Date date = 1;
+    // 任意 (空の配列の場合は絞り込みなし) JIS X0401 都道府県コード (2桁・ゼロ埋め)
+    repeated string prefecture_codes = 2;
+}
+
+message ListViewsResponse {
+    repeated MinimumHourlyWageView views = 1;
+}
+

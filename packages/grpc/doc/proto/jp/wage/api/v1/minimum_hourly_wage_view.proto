@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+import "google/type/date.proto";
+
+package jp.wage.api.v1;
+
+message MinimumHourlyWageView {
+    // 最低賃金 (時給) 単位は円
+    uint32 hourly_wage = 1;
+    // JIS X0401 都道府県コード (2桁・ゼロ埋め)
+    string prefecture_code = 2;
+    optional NextMinimumHourlyWageView next = 3;
+}
+
+// 改定情報
+message NextMinimumHourlyWageView {
+    // 最低賃金 (時給) 単位は円
+    uint32 hourly_wage = 1;
+    // 発効日 
+    google.type.Date effective_date = 2;
+    // 公示日 nullの場合は公示されていない (変更になる可能性がある)
+    optional google.type.Date publication_date = 3;
+}
