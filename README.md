@@ -29,11 +29,11 @@
     - 都道府県労働局から官報で公示されたら最低賃金のマスタを更新
     - 最低賃金のマスタはリポジトリにコミット
 
-# RestfulAPI
+# Restful API
 
 [API仕様](./packages/restful/doc/openapi.yaml)
 
-RestfulAPIサーバの起動
+サーバの起動
 
 ```
 npm install
@@ -44,6 +44,24 @@ npm run restful
 
 - RESTFUL_API_PORT : リクエストを受け付けるポート番号 (省略した場合は3000)
 
+ログは標準出力にJSON形式で出力されます。
+TLSが必要な場合は別途リバースプロキシを用意してください。
+
+# gRPC API (ログ出力が未対応)
+
+[API仕様](./packages/grpc/doc/proto/jp/wage/api/v1/minimum_hourly_wage_api.proto)
+
+サーバの起動
+
+```
+npm install
+npm run grpc
+```
+
+環境変数 
+
+- GRPC_API_PORT : リクエストを受け付けるポート番号 (省略した場合は3000)
+
 TLSが必要な場合は別途リバースプロキシを用意してください。
 
 # ディレクトリ構成
@@ -52,21 +70,27 @@ npm workspacesを使ったモノレポ構成。
 
 クリーンアーキテクチャに倣ってます。
 
-- core
+- packages/core
     - 外部ライブラリやデータソースに依存しない純粋なリソース定義
-- usecase
+- packages/usecase
     - Service : データアクセスのI/F
     - Interactor : InputをOutputに変換するI/Fで、すべてのユースケースはこれを実装する
-- local
+- packages/local
     - Serviceに対するインメモリでの実装
         - 現状では外部データソース(RDBなど)を使っていないため    
-- winston
+- packages/winston
     - LoggingServiceの実装
-- restful
+- packages/restful
     - 外部物理仕様(RESTfulAPI)に対する実装
         - フレームワークはExpress
     - RestfulAdapter : Interactorと1:1で実装する
     - index.ts : サーバ起動のエントリポイント
+- packages/grpc
+    - 外部物理仕様(gRPC)に対する実装
+        - フレームワークはgrpc-js
+    - ServerUraryCallAdapter : Interactorと1:1で実装する
+    - index.ts : サーバ起動のエントリポイント
+
 
 # 補足
 

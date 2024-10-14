@@ -7,14 +7,16 @@
     "build": "tsc --build",
     "lint": "eslint .",
     "test": "jest",
-    "restful": "npm start -w packages/restful"
+    "restful": "npm start -w packages/restful",
+    "grpc": "npm start -w packages/grpc"
   },
   "workspaces": [
     "packages/core",
     "packages/usecase",
     "packages/local",
     "packages/winston",
-    "packages/restful"
+    "packages/restful",
+    "packages/grpc"
   ],
   "author": "Masato Watanabe",
   "license": "MIT",
