@@ -31,7 +31,7 @@
 
 # RestfulAPI
 
-[API仕様](./doc/openapi.yaml)
+[API仕様](./packages/restful/doc/openapi.yaml)
 
 RestfulAPIサーバの起動
 
