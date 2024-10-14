@@ -1,11 +1,12 @@
 syntax = "proto3";
 
-import "google/protobuf/wrappers.proto";
 import "google/type/date.proto";
+
+import "jp/wage/api/v1/minimum_hourly_wage_view.proto";
 
 package jp.wage.api.v1;
 
-service MinimumHourlyWageService {
+service MinimumHourlyWage {
     rpc ListViews(ListViewsRequest) returns (ListViewsResponse) {
         option idempotency_level = NO_SIDE_EFFECTS;
     };

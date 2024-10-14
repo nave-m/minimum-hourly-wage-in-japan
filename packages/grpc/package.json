@@ -1,0 +1,26 @@
+{
+  "name": "grpc",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "directories": {
+    "doc": "doc"
+  },
+  "scripts": {
+    "start": "ts-node src/index.ts"
+  },
+  "keywords": [],
+  "author": "Masato Watanabe",
+  "license": "MIT",
+  "description": "",
+  "dependencies": {
+    "@grpc/grpc-js": "^1.12.2"
+  },
+  "devDependencies": {
+    "@types/google-protobuf": "^3.15.12",
+    "google-proto-files": "^4.2.0",
+    "grpc_tools_node_protoc_ts": "^5.3.3",
+    "grpc-tools": "^1.12.4",
+    "ts-node": "^10.9.2"
+  }
+}
