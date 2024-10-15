@@ -30,7 +30,8 @@ function deserialize_jp_wage_api_v1_ListViewsResponse(buffer_arg) {
 
 
 var MinimumHourlyWageService = exports.MinimumHourlyWageService = {
-  listViews: {
+  // INVALID_ARGUMENT応答時にはMetaDataのキー google.rpc.BadRequest-bin にBadRequestが入ってます
+listViews: {
     path: '/jp.wage.api.v1.MinimumHourlyWage/ListViews',
     requestStream: false,
     responseStream: false,
