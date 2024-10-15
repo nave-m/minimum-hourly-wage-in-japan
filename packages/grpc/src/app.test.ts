@@ -1,9 +1,11 @@
-import { ChannelCredentials, Server, ServerCredentials} from "@grpc/grpc-js";
+import { ChannelCredentials, Metadata, Server, ServerCredentials, ServiceError} from "@grpc/grpc-js";
 import { configure } from './app';
 import { LoggingService } from '@minimum-hourly-wage-in-japan/usecase/src/LoggingService';
 import { ListViewsRequest, ListViewsResponse } from "./gen/jp/wage/api/v1/minimum_hourly_wage_api_pb";
 import { Date as GoogleDate } from "./gen/google/type/date_pb";
 import { MinimumHourlyWageClient } from "./gen/jp/wage/api/v1/minimum_hourly_wage_api_grpc_pb";
+import { Status } from "@grpc/grpc-js/build/src/constants";
+import { BadRequest } from "./gen/google/rpc/error_details_pb";
 
 describe('gRPC API', () => {
     const loggingService: LoggingService = {
@@ -36,6 +38,18 @@ describe('gRPC API', () => {
             googleDate.setDay(props.day);
             return googleDate;
         };
+        const extractBadRequest = (metadata: Metadata): BadRequest => {
+            const metadataValues = metadata.get('google.rpc.BadRequest-bin');
+            if (metadataValues.length === 0) {
+                throw new Error('キー google.rpc.BadRequest-bin に対して何も入ってない');
+            }
+            const mayBeBuffer = metadataValues[0];
+            if (mayBeBuffer instanceof Buffer) {
+                return BadRequest.deserializeBinary(mayBeBuffer);
+            } else {
+                throw new Error('metadataからBadRequestが取り出せない')
+            }   
+        }
         describe('rpc ListViews', () => {
             it('正常系 日付を指定するとその時点における最低時給と将来の改定情報を返す', async () => {
                 const response = await new Promise<ListViewsResponse>((resolve, reject) => {
@@ -84,50 +98,59 @@ describe('gRPC API', () => {
                 expect(response.getViewsList()[1].getPrefectureCode()).toBe('14');
             });
             it('準正常系 日付の指定がされない場合はINVALID_ARUGMENT応答', async () => {
-                await expect(
-                    new Promise<ListViewsResponse>((resolve, reject) => {
-                        const request = new ListViewsRequest();
-                        client.listViews(request, (error, response) => {
-                            if (response) {
-                                resolve(response);
-                            } else {
-                                reject(error);
-                            }
-                        })
+                const serviceError: ServiceError = await new Promise<ListViewsResponse>((resolve, reject) => {
+                    const request = new ListViewsRequest();
+                    client.listViews(request, (error, response) => {
+                        if (response) {
+                            resolve(response);
+                        } else {
+                            reject(error);
+                        }
                     })
-                ).rejects.toThrow('INVALID_ARGUMENT');
+                }).catch((error) => error);
+                expect(serviceError.code).toBe(Status.INVALID_ARGUMENT);
+                const badRequest = extractBadRequest(serviceError.metadata);    
+                expect(badRequest.getFieldViolationsList()).toHaveLength(1);
+                expect(badRequest.getFieldViolationsList()[0].getField()).toBe('date');
+                expect(badRequest.getFieldViolationsList()[0].getDescription()).toBe('日付は必須です');
             });
             it('準正常系 存在しない日付が指定された場合はINVALID_ARUGMENT応答', async () => {
-                await expect(
-                    new Promise<ListViewsResponse>((resolve, reject) => {
-                        const request = new ListViewsRequest();
-                        request.setDate(createDate({year: 2024, month: 13, day: 31}));
-                        client.listViews(request, (error, response) => {
-                            if (response) {
-                                resolve(response);
-                            } else {
-                                reject(error);
-                            }
-                        })
+                const serviceError: ServiceError = await new Promise<ListViewsResponse>((resolve, reject) => {
+                    const request = new ListViewsRequest();
+                    request.setDate(createDate({year: 2024, month: 13, day: 31}));
+                    client.listViews(request, (error, response) => {
+                        if (response) {
+                            resolve(response);
+                        } else {
+                            reject(error);
+                        }
                     })
-                ).rejects.toThrow('INVALID_ARGUMENT');
+                }).catch((error) => error);
+                expect(serviceError.code).toBe(Status.INVALID_ARGUMENT);
+                const badRequest = extractBadRequest(serviceError.metadata);    
+                expect(badRequest.getFieldViolationsList()).toHaveLength(1);
+                expect(badRequest.getFieldViolationsList()[0].getField()).toBe('date');
+                expect(badRequest.getFieldViolationsList()[0].getDescription()).toBe('日付として解釈できません');
             });
             it('準正常系 存在しない都道府県コードが指定された場合はINVALID_ARGUMENT応答', async () => {
-                await expect(
-                    new Promise<ListViewsResponse>((resolve, reject) => {
-                        const request = new ListViewsRequest();
-                        request.setDate(createDate({year: 2024, month: 10, day: 5}));
-                        request.setPrefectureCodesList(['13', '48']);
-                        client.listViews(request, (error, response) => {
-                            if (response) {
-                                resolve(response);
-                            } else {
-                                reject(error);
-                            }
-                        })
-                    })
-                ).rejects.toThrow('INVALID_ARGUMENT');
+                const serviceError: ServiceError = await new Promise<ListViewsResponse>((resolve, reject) => {
+                    const request = new ListViewsRequest();
+                    request.setDate(createDate({year: 2024, month: 10, day: 5}));
+                    request.setPrefectureCodesList(['13', '48']);
+                    client.listViews(request, (error, response) => {
+                        if (response) {
+                            resolve(response);
+                        } else {
+                            reject(error);
+                        }
+                    })    
+                }).catch((error) => error);
+                expect(serviceError.code).toBe(Status.INVALID_ARGUMENT);
+                const badRequest = extractBadRequest(serviceError.metadata);    
+                expect(badRequest.getFieldViolationsList()).toHaveLength(1);
+                expect(badRequest.getFieldViolationsList()[0].getField()).toBe('prefectureCodes[1]');
+                expect(badRequest.getFieldViolationsList()[0].getDescription()).toBe('都道府県コードとして解釈できません');
             });
         });
-    })
+    });
 });

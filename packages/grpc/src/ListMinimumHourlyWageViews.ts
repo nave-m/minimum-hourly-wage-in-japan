@@ -41,7 +41,7 @@ export class ListMinimumHourlyWageViews extends ServerUraryCallAdapter<ListMinim
                 }
                 return view;
             }),
-        )
+        );
         callback(null, response);
     }
     private extractDate(request: ListViewsRequest): Date | null {
