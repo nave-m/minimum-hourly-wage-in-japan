@@ -44,10 +44,31 @@ npm run restful
 
 - RESTFUL_API_PORT : リクエストを受け付けるポート番号 (省略した場合は3000)
 
+ログフォーマット
+
+```typescript
+type AccessLogFormat = {
+    level: 'info';
+    service: 'minimum-hourly-wage-in-japan-restful-api';
+    message: 'access-log';
+    timestamp: string; // ISO8601
+    request: {
+        path: string;
+        method: string;
+        headers: object;
+        query?: object;
+    };
+    response: {
+        statusCode: number;
+        body?: object;
+    };
+}
+```
+
 ログは標準出力にJSON形式で出力されます。
 TLSが必要な場合は別途リバースプロキシを用意してください。
 
-# gRPC API (ログ出力が未対応)
+# gRPC API
 
 [API仕様](./packages/grpc/doc/proto/jp/wage/api/v1/minimum_hourly_wage_api.proto)
 
@@ -61,6 +82,30 @@ npm run grpc
 環境変数 
 
 - GRPC_API_PORT : リクエストを受け付けるポート番号 (省略した場合は3000)
+
+ログフォーマット
+
+```typescript
+type AccessLogFormat = {
+    level: 'info';
+    service: 'minimum-hourly-wage-in-japan-grpc-api';
+    message: 'access-log';
+    timestamp: string; // ISO8601
+    request: {
+        path: string;
+        message?: object;
+    };
+    response: {
+        status?: {
+            code: number;
+            details: string;     // e.g. OK INVALID_ARGUMENT INTERNAL
+            metadata?: object;
+            badrequest?: object; // INVALID_ARGUMENT応答の場合、google.rpc.BadRequestをオブジェクトにして出力
+        };
+        message?: object;
+    };
+}
+```
 
 ログは標準出力にJSON形式で出力されます。
 TLSが必要な場合は別途リバースプロキシを用意してください。

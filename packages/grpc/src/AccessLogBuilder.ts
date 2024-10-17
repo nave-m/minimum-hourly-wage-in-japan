@@ -32,8 +32,8 @@ export class AccessLogBuilder {
     build(): object {
         return {
             message: 'access-log',
-            path: this.path,
             request: {
+                path: this.path,
                 message: this.requestMessage?.toObject() || undefined,
             },
             response: {
