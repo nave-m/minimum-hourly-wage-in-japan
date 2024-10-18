@@ -5,8 +5,7 @@ import { PrefectureCode } from "@minimum-hourly-wage-in-japan/core/src/Prefectur
 import { TermBetween, TermSince, TermUntil } from "@minimum-hourly-wage-in-japan/core/src/Term";
 import { MinimumHourlyWageRevisionServiceImpl } from "./MinimumHourlyWageRevisionServiceImpl";
 
-describe('MinimumHourlyWageQueryImpl', ()=> {
-    
+describe('MinimumHourlyWageRevisionServiceImpl', ()=> {
     describe('list', () => {
         const hokkaido20231001 = new MinimumHourlyWageRevision({prefectureCode: PrefectureCode.Hokkaido, hourlyWage: 960, effectiveDate: LocalDate.fromISO8601('2023-10-01'), publicationDate: LocalDate.fromISO8601('2023-09-01')});
         const aomori20231007 = new MinimumHourlyWageRevision({prefectureCode: PrefectureCode.Aomori, hourlyWage: 898, effectiveDate: LocalDate.fromISO8601('2023-10-07'), publicationDate: LocalDate.fromISO8601('2023-09-07')});
