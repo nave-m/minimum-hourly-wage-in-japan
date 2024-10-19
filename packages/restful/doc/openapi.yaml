@@ -27,7 +27,6 @@ paths:
             items: 
               type: string
           description: JIS X0401 都道府県コード (2桁・ゼロ埋め)
-          example: '01' 
           required: false
       responses:
         '200':
@@ -65,7 +64,7 @@ components:
         prefectureCode:
           type: string
           description: JIS X0401 都道府県コード (2桁・ゼロ埋め)
-          example: 01
+          example: "01"
         next:
           type: object
           description: 改定予定
