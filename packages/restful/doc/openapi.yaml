@@ -110,10 +110,12 @@ components:
     BadRequestViolation:
       type: object
       properties:
-        propertyName:
+        property:
           type: string
+          description: 制約違反のあったプロパティ
         message:
           type: string
+          description: 制約違反の内容
       required:
-        - propertyName
+        - property
         - message
