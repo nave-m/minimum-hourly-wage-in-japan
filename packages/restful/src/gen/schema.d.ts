@@ -37,7 +37,7 @@ export interface components {
             hourlyWage: number;
             /**
              * @description JIS X0401 都道府県コード (2桁・ゼロ埋め)
-             * @example 1
+             * @example 01
              */
             prefectureCode: string;
             /** @description 改定予定 */
@@ -92,10 +92,7 @@ export interface operations {
                  * @example 2024-09-30
                  */
                 date: string;
-                /**
-                 * @description JIS X0401 都道府県コード (2桁・ゼロ埋め)
-                 * @example 01
-                 */
+                /** @description JIS X0401 都道府県コード (2桁・ゼロ埋め) */
                 prefectureCodes?: string[];
             };
             header?: never;
