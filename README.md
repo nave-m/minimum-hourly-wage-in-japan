@@ -96,7 +96,7 @@ type AccessLogFormat = {
         message?: object;
     };
     response: {
-        status?: {
+        status: {
             code: number;
             details: string;     // e.g. OK INVALID_ARGUMENT INTERNAL
             metadata?: object;
@@ -131,11 +131,13 @@ npm workspacesを使ったモノレポ構成。
         - フレームワークはExpress
     - RestfulAdapter : Interactorと1:1で実装する
     - index.ts : サーバ起動のエントリポイント
+    - openapi.yamlからのコード生成は `npm -w packages/restful run codegen`
 - packages/grpc
     - 外部物理仕様(gRPC)に対する実装
         - フレームワークはgrpc-js
     - ServerUraryCallAdapter : Interactorと1:1で実装する
     - index.ts : サーバ起動のエントリポイント
+    - protoファイルからのコード生成は `make protogen`
 
 
 # 補足

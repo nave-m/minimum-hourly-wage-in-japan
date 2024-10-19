@@ -9,6 +9,7 @@ export default tseslint.config(
   {
     ignores: [
       "packages/grpc/src/gen/*", // 自動生成コードなのでチェックしない
+      "packages/restful/src/gen/*", // 自動生成コードなのでチェックしない
     ]
   },
 );
