@@ -1,9 +1,12 @@
 import { Request, Response } from "express";
 import { ListMinimumHourlyWageInteractor, ListMinimumHourlyWageInput, MinimumHourlyWage, ListMinimumHourlyWageOutput } from "@minimum-hourly-wage-in-japan/usecase/src/ListMinimumHourlyWage";
 import { RestfulAdapter } from "./RestfulAdapter";
+import { components } from "./gen/schema";
 import { LocalDate } from "@minimum-hourly-wage-in-japan/core/src/LocalDate";
 import { InvalidArgumentError } from "@minimum-hourly-wage-in-japan/usecase/src/UseCaseError";
 import { LoggingService } from "@minimum-hourly-wage-in-japan/usecase/src/LoggingService";
+
+type OkResponseBodyType = components["schemas"]["GetMinimumHourlyWagesViewsResponseBody"];
 
 export class GetMinimumHourlyWageViews extends RestfulAdapter<ListMinimumHourlyWageInput, ListMinimumHourlyWageOutput> {
     protected readonly interactor: ListMinimumHourlyWageInteractor;
@@ -21,7 +24,7 @@ export class GetMinimumHourlyWageViews extends RestfulAdapter<ListMinimumHourlyW
         });
     }
     protected sendResponse(output: ListMinimumHourlyWageOutput, res: Response): void {
-        res.send({
+        const body: OkResponseBodyType = {
             minimumHourlyWageViews: output.minimumHourlyWages.map((minimumHourlyWage: MinimumHourlyWage) => {
                 return {
                     prefectureCode: minimumHourlyWage.prefectureCode,
@@ -33,7 +36,8 @@ export class GetMinimumHourlyWageViews extends RestfulAdapter<ListMinimumHourlyW
                     } : null,
                 }
             })
-        });
+        };
+        res.send(body);
     }
     private extractDate(req: Request): Date | null{
         try {

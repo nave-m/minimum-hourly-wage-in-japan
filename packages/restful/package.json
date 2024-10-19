@@ -4,7 +4,8 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "start": "ts-node src/index.ts"
+    "start": "ts-node src/index.ts",
+    "codegen": "openapi-typescript ./doc/openapi.yaml -o ./src/gen/schema.d.ts"
   },
   "author": "Masato Watanabe",
   "license": "MIT",
@@ -18,6 +19,7 @@
     "@types/express": "^5.0.0",
     "@types/node": "^22.7.5",
     "@types/supertest": "^6.0.2",
+    "openapi-typescript": "^7.4.1",
     "regenerator-runtime": "^0.14.1",
     "supertest": "^7.0.0",
     "ts-node": "^10.9.2"
