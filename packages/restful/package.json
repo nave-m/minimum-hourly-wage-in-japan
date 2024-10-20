@@ -2,9 +2,9 @@
   "name": "@minimum-hourly-wage-in-japan/restful",
   "version": "1.0.0",
   "main": "dist/index.js",
-  "types": "dist/index.d.ts",
   "scripts": {
-    "start": "ts-node src/index.ts",
+    "build": "esbuild --bundle --platform=node --outfile=dist/index.js src/index.ts",
+    "start": "node dist/index.js",
     "codegen": "openapi-typescript ./doc/openapi.yaml -o ./src/gen/schema.d.ts"
   },
   "author": "Masato Watanabe",
@@ -14,14 +14,12 @@
     "express": "^4.21.1"
   },
   "devDependencies": {
-    "@swc/core": "^1.7.35",
-    "@swc/helpers": "^0.5.13",
     "@types/express": "^5.0.0",
     "@types/node": "^22.7.5",
     "@types/supertest": "^6.0.2",
+    "esbuild": "0.24.0",
     "openapi-typescript": "^7.4.1",
     "regenerator-runtime": "^0.14.1",
-    "supertest": "^7.0.0",
-    "ts-node": "^10.9.2"
+    "supertest": "^7.0.0"
   }
 }
