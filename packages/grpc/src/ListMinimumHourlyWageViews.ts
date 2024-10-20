@@ -3,7 +3,6 @@ import { ServerUraryCallAdapter } from "./ServerUraryCallAdapter";
 import { ListViewsRequest, ListViewsResponse } from "./gen/jp/wage/api/v1/minimum_hourly_wage_api_pb";
 import { ListMinimumHourlyWageInteractor, ListMinimumHourlyWageInput, MinimumHourlyWage, ListMinimumHourlyWageOutput } from "@minimum-hourly-wage-in-japan/usecase/src/ListMinimumHourlyWage";
 import { LoggingService } from "@minimum-hourly-wage-in-japan/usecase/src/LoggingService";
-import { InvalidArgumentError } from "@minimum-hourly-wage-in-japan/usecase/src/UseCaseError";
 import { MinimumHourlyWageView, NextMinimumHourlyWageView } from "./gen/jp/wage/api/v1/minimum_hourly_wage_view_pb";
 import { LocalDate } from "@minimum-hourly-wage-in-japan/core/src/LocalDate";
 import { Date as GoogleDate } from "./gen/google/type/date_pb";
@@ -47,9 +46,7 @@ export class ListMinimumHourlyWageViews extends ServerUraryCallAdapter<ListMinim
     private extractDate(request: ListViewsRequest): Date | null {
         const mayBeDate = request.getDate();
         if (mayBeDate == null) {
-            throw new InvalidArgumentError({
-                violations: [{property: 'date', message: '日付は必須です'}]
-            });
+            return null;
         } else {
             return new Date(`${mayBeDate.getYear()}-${String(mayBeDate.getMonth()).padStart(2, '0')}-${String(mayBeDate.getDay()).padStart(2, '0')}`)
         }

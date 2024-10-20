@@ -56,7 +56,7 @@ describe('ListMinimumHourlyWageInteractor', () => {
                     date: null,
                     prefectureCodes: null,
                 }),
-                new InvalidArgumentError({violations: [{property:'date', message: '日付として解釈できません'}]}),
+                new InvalidArgumentError({violations: [{property:'date', message: '日付は必須です'}]}),
             ],
             [
                 '日付が不正な値',
@@ -78,11 +78,14 @@ describe('ListMinimumHourlyWageInteractor', () => {
                 ]}),
             ]
         ])('入力の成約違反があればInvalidArgumentErrorを投げる %s', (_, input, expectedError) => {
-            expect(() => {
+            try {
                 new ListMinimumHourlyWageInteractor({
                     minimumHourlyWageRevisionService: createMinimumHourlyWageRevisionService(),
                 }).validate(input);
-            }).toThrow(expectedError);
+                throw new Error('validateメソッドが例外を投げていない');
+            } catch(e) {
+                expect(e).toStrictEqual(expectedError);
+            }     
         });
     });
     describe('invoke', () => {
@@ -114,15 +117,14 @@ describe('ListMinimumHourlyWageInteractor', () => {
                     ]
                 })
             );
-            // Inputで日付を指定したので、現在の日付の取得は実施されない
+            // Inputで指定日した日が10月なので「現在の時給の照会」と「改定の照会」の２回実施される
             expect(minimumHourlyWageRevisionService.list).toHaveBeenCalledTimes(2);
-            // 現在の時給の照会する
+            // 現在の時給の照会期間は前年の10月1日からInputで指定日した日まで
             expect(minimumHourlyWageRevisionService.list).toHaveBeenNthCalledWith(1, {
-                // 前年の10月1日からInputで指定日した日まで
                 effectiveDate: new TermBetween({since: LocalDate.fromISO8601('2023-10-01'), until: LocalDate.fromISO8601('2024-10-03')}),
                 prefectureCodes: [PrefectureCode.Hokkaido, PrefectureCode.Aomori, PrefectureCode.Iwate],
             });
-            // Inputで指定日した日が10月なので改定の照会を今年の10月から11月までの範囲で実施
+            // 改定の照会期間は今年の10月から11月まで
             expect(minimumHourlyWageRevisionService.list).toHaveBeenNthCalledWith(2, {
                 effectiveDate: new TermBetween({since: LocalDate.fromISO8601('2024-10-01'), until: LocalDate.fromISO8601('2024-11-30')}),
                 prefectureCodes: [PrefectureCode.Hokkaido, PrefectureCode.Aomori, PrefectureCode.Iwate],
@@ -139,10 +141,10 @@ describe('ListMinimumHourlyWageInteractor', () => {
             ).resolves.toStrictEqual(
                 new ListMinimumHourlyWageOutput({minimumHourlyWages: []})
             );
-            // 12月なので改定の照会はせず、現在の時給の照会が１回だけされる
+            // 12月なので改定の照会はせず、現在の時給の照会だけされる
             expect(minimumHourlyWageRevisionService.list).toHaveBeenCalledTimes(1);
+            // 現在の時給の照会期間は前年の10月1日からInputで指定日した日まで
             expect(minimumHourlyWageRevisionService.list).toHaveBeenNthCalledWith(1, {
-                // 前年の10月1日から現在の日付まで
                 effectiveDate: new TermBetween({since: LocalDate.fromISO8601('2044-10-01'), until: LocalDate.fromISO8601('2045-12-31')}),
                 prefectureCodes: null,
             });
