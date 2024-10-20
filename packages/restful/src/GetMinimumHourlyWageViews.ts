@@ -39,7 +39,7 @@ export class GetMinimumHourlyWageViews extends RestfulAdapter<ListMinimumHourlyW
         };
         res.send(body);
     }
-    private extractDate(req: Request): Date | null{
+    private extractDate(req: Request): Date | null {
         try {
             const mayBeDate = req.query.date as string | string[] | undefined;
             if (mayBeDate == null) {
