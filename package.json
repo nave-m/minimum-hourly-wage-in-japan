@@ -4,10 +4,12 @@
   "description": "日本の最低賃金(時給)",
   "main": "index.js",
   "scripts": {
-    "build": "tsc --build",
+    "typecheck": "tsc --noEmit",
     "lint": "eslint .",
     "test": "jest",
+    "build:restful": "npm run build -w packages/restful", 
     "restful": "npm start -w packages/restful",
+    "build:grpc": "npm run build -w packages/grpc", 
     "grpc": "npm start -w packages/grpc"
   },
   "workspaces": [

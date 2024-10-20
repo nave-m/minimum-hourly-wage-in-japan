@@ -37,6 +37,7 @@
 
 ```
 npm install
+npm run build:restful
 npm run restful
 ```
 
@@ -76,6 +77,7 @@ TLSが必要な場合は別途リバースプロキシを用意してくださ�
 
 ```
 npm install
+npm run build:grpc
 npm run grpc
 ```
 
@@ -131,16 +133,21 @@ npm workspacesを使ったモノレポ構成。
         - フレームワークはExpress
     - RestfulAdapter : Interactorと1:1で実装する
     - index.ts : サーバ起動のエントリポイント
-    - openapi.yamlからのコード生成は `npm -w packages/restful run codegen`
+    - gen/schema.d.ts OpenAPIのyamlから生成したレスポンスなどの型定義
+        - openapi.yamlを変更したら `npm -w packages/restful run codegen` で生成しなおす
 - packages/grpc
     - 外部物理仕様(gRPC)に対する実装
         - フレームワークはgrpc-js
     - ServerUraryCallAdapter : Interactorと1:1で実装する
     - index.ts : サーバ起動のエントリポイント
-    - protoファイルからのコード生成は `make protogen`
+    - gen/ protoファイルから生成したコード
+        - protoファイルを変更したら `make protogen` で生成しなおす
 
+# 補足 最低賃金改定時の実施内容
 
-# 補足
+[最低賃金の定義](./packages/local/src/InMemoryDataSource.ts)を更新して、APIをデプロイする
+
+情報ソース
 
 - [インターネット版官報](https://kanpou.npb.go.jp/)
     - 直近90日間は無料で閲覧できる

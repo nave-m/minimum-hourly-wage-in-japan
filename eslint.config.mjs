@@ -8,8 +8,10 @@ export default tseslint.config(
   ...tseslint.configs.recommended,
   {
     ignores: [
-      "packages/grpc/src/gen/*", // 自動生成コードなのでチェックしない
-      "packages/restful/src/gen/*", // 自動生成コードなのでチェックしない
+      "packages/grpc/src/gen/*",        // 自動生成コード
+      "packages/grpc/dist/index.js",    // ビルド結果
+      "packages/restful/src/gen/*",     // 自動生成コード
+      "packages/restful/dist/index.js", // ビルド結果
     ]
   },
 );

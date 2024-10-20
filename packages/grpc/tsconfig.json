@@ -8,8 +8,5 @@
     { "path": "../usecase" },
     { "path": "../local" },
     { "path": "../winston" }
-  ],
-  "ts-node": {
-    "swc": true
-  }
+  ]
 }
