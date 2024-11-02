@@ -77,8 +77,9 @@ type AccessLogFormat = {
 };
 ```
 
-ログは標準出力にJSON形式で出力されます。
-TLSが必要な場合は別途リバースプロキシを用意してください。
+- ヘルスチェックは`GET /api/v1/health`が200応答であるか確認
+- ログは標準出力にJSON形式で出力されます。
+- TLSが必要な場合は別途リバースプロキシを用意してください。
 
 ## gRPC API
 
@@ -120,8 +121,11 @@ type AccessLogFormat = {
 };
 ```
 
-ログは標準出力にJSON形式で出力されます。
-TLSが必要な場合は別途リバースプロキシを用意してください。
+- ヘルスチェックは[gRPCのHealthサービス](https://github.com/grpc/grpc/blob/master/doc/health-checking.md)を実装してあります
+    - リクエスト HealthCheckRequest.serviceに`MinimumHourlyWage`を指定
+    - レスポンス HealthCheckResponse.statusが`SERVING`であるか確認
+- ログは標準出力にJSON形式で出力されます。
+- TLSが必要な場合は別途リバースプロキシを用意してください。
 
 # 開発者向け ディレクトリ構成
 

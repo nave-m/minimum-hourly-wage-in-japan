@@ -83,4 +83,10 @@ describe('RESTfulAPI', () => {
             });
         });
     });
+    describe('GET /api/v1/health', () => {
+        it('正常系 サーバが起動していれば200応答', async () => {
+            const response = await request(app).get('/api/v1/health');
+            expect(response.statusCode).toBe(200);
+        });
+    });
 });

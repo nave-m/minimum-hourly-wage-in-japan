@@ -6,6 +6,7 @@ import { ListMinimumHourlyWageViews } from "./ListMinimumHourlyWageViews";
 import { LoggingService } from '@minimum-hourly-wage-in-japan/usecase/src/LoggingService';
 import { MinimumHourlyWageRevisionServiceImpl } from '@minimum-hourly-wage-in-japan/local/src/MinimumHourlyWageRevisionServiceImpl';
 import { InMemoryDataSource } from '@minimum-hourly-wage-in-japan/local/src/InMemoryDataSource';
+import { HealthImplementation } from 'grpc-health-check';
 
 export const configure = (props: {
     server: Server;
@@ -26,7 +27,11 @@ export const configure = (props: {
         ): void => {
             listViewsAdapter.invoke(call, callback);
         },
-    })
+    });
+    new HealthImplementation({
+        'MinimumHourlyWage': 'SERVING',
+        '': 'SERVING',
+    }).addToServer(props.server);
     return props.server;
     
 }

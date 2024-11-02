@@ -41,6 +41,13 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/BadRequestResponseBody'
+  /api/v1/health:
+    get:
+      description: APIのヘルスチェック
+      operationId: getV1Health
+      responses:
+        '200':
+          description: OK
 
 components:
   schemas:
