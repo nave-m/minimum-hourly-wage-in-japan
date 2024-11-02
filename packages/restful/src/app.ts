@@ -21,5 +21,8 @@ export const configure = (props: {
     props.app.get('/api/v1/minimumHourlyWageViews', async (req, res) => {
         await getMinimumHourlyWageViews.invoke(req, res);
     });
+    props.app.get('/api/v1/health', (_, res) => {
+        res.send(200);
+    });
     return props.app;
 };

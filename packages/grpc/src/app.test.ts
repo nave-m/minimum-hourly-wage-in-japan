@@ -6,6 +6,8 @@ import { Date as GoogleDate } from "./gen/google/type/date_pb";
 import { MinimumHourlyWageClient } from "./gen/jp/wage/api/v1/minimum_hourly_wage_api_grpc_pb";
 import { Status } from "@grpc/grpc-js/build/src/constants";
 import { BadRequest } from "./gen/google/rpc/error_details_pb";
+import { HealthCheckRequest, HealthCheckResponse } from "./gen/grpc/health/v1/health_pb";
+import { HealthClient } from "./gen/grpc/health/v1/health_grpc_pb";
 
 describe('gRPC API', () => {
     const loggingService: LoggingService = {
@@ -150,6 +152,39 @@ describe('gRPC API', () => {
                 expect(badRequest.getFieldViolationsList()).toHaveLength(1);
                 expect(badRequest.getFieldViolationsList()[0].getField()).toBe('prefectureCodes[1]');
                 expect(badRequest.getFieldViolationsList()[0].getDescription()).toBe('都道府県コードとして解釈できません');
+            });
+        });
+    });
+    describe('service Health', () => {
+        const client = new HealthClient(host, ChannelCredentials.createInsecure());
+        describe('rpc Check', () => {
+            it('正常系 サービス名を指定してMinimumHourlyWageが稼働していることを確認できる', async () => {
+                const response = await new Promise<HealthCheckResponse>((resolve, reject) => {
+                    const request = new HealthCheckRequest();
+                    request.setService('MinimumHourlyWage');
+                    client.check(request, (error, response) => {
+                        if(response) {
+                            resolve(response)
+                        } else {
+                            reject(error);
+                        }
+                    });
+                });
+                expect(response.getStatus()).toBe(HealthCheckResponse.ServingStatus.SERVING);
+            });
+            it('準正常系 存在しないサービス名をしているとNOT_FOUND応答', async () => {
+                const serviceError: ServiceError = await new Promise<HealthCheckResponse>((resolve, reject) => {
+                    const request = new HealthCheckRequest();
+                    request.setService('Invalid');
+                    client.check(request, (error, response) => {
+                        if(response) {
+                            resolve(response)
+                        } else {
+                            reject(error);
+                        }
+                    });
+                }).catch((error) => error);
+                expect(serviceError.code).toBe(Status.NOT_FOUND);
             });
         });
     });

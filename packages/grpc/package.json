@@ -16,6 +16,7 @@
   "description": "",
   "dependencies": {
     "@grpc/grpc-js": "^1.12.2",
+    "grpc-health-check": "^2.0.2",
     "grpc-server-reflection": "^0.1.5"
   },
   "devDependencies": {
