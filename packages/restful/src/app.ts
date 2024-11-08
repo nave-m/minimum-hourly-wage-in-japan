@@ -22,7 +22,7 @@ export const configure = (props: {
         await getMinimumHourlyWageViews.invoke(req, res);
     });
     props.app.get('/api/v1/health', (_, res) => {
-        res.send(200);
+        res.sendStatus(200);
     });
     return props.app;
 };
