@@ -17,7 +17,7 @@
     "@types/express": "^5.0.0",
     "@types/node": "^22.7.5",
     "@types/supertest": "^6.0.2",
-    "esbuild": "0.24.0",
+    "esbuild": "^0.25.0",
     "openapi-typescript": "^7.4.1",
     "regenerator-runtime": "^0.14.1",
     "supertest": "^7.0.0"
