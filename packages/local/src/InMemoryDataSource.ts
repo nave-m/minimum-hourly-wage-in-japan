@@ -101,6 +101,9 @@ export class InMemoryDataSource {
             new MinimumHourlyWageRevision({prefectureCode: PrefectureCode.Miyazaki, hourlyWage: 952, effectiveDate: LocalDate.fromISO8601('2024-10-05'), publicationDate: LocalDate.fromISO8601('2024-09-05')}),
             new MinimumHourlyWageRevision({prefectureCode: PrefectureCode.Kagoshima, hourlyWage: 953, effectiveDate: LocalDate.fromISO8601('2024-10-05'), publicationDate: LocalDate.fromISO8601('2024-09-05')}),
             new MinimumHourlyWageRevision({prefectureCode: PrefectureCode.Okinawa, hourlyWage: 952, effectiveDate: LocalDate.fromISO8601('2024-10-09'), publicationDate: LocalDate.fromISO8601('2024-09-09')}),
+            // 2024
+            new MinimumHourlyWageRevision({prefectureCode: PrefectureCode.Tochigi, hourlyWage: 1068, effectiveDate: LocalDate.fromISO8601('2025-10-01'), publicationDate: LocalDate.fromISO8601('2025-08-05')}),
+            new MinimumHourlyWageRevision({prefectureCode: PrefectureCode.Niigata, hourlyWage: 1050, effectiveDate: LocalDate.fromISO8601('2025-10-02'), publicationDate: LocalDate.fromISO8601('2025-08-06')}),
         ];
     }
 }
