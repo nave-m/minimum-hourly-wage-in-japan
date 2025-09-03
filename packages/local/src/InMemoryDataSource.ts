@@ -101,10 +101,10 @@ export class InMemoryDataSource {
             new MinimumHourlyWageRevision({prefectureCode: PrefectureCode.Miyazaki, hourlyWage: 952, effectiveDate: LocalDate.fromISO8601('2024-10-05'), publicationDate: LocalDate.fromISO8601('2024-09-05')}),
             new MinimumHourlyWageRevision({prefectureCode: PrefectureCode.Kagoshima, hourlyWage: 953, effectiveDate: LocalDate.fromISO8601('2024-10-05'), publicationDate: LocalDate.fromISO8601('2024-09-05')}),
             new MinimumHourlyWageRevision({prefectureCode: PrefectureCode.Okinawa, hourlyWage: 952, effectiveDate: LocalDate.fromISO8601('2024-10-09'), publicationDate: LocalDate.fromISO8601('2024-09-09')}),
-            // 2024
+            // 2025
             new MinimumHourlyWageRevision({prefectureCode: PrefectureCode.Tochigi, hourlyWage: 1068, effectiveDate: LocalDate.fromISO8601('2025-10-01'), publicationDate: LocalDate.fromISO8601('2025-09-01')}),
-            new MinimumHourlyWageRevision({prefectureCode: PrefectureCode.Chiba, hourlyWage: 1076, effectiveDate: LocalDate.fromISO8601('2025-10-03'), publicationDate: LocalDate.fromISO8601('2025-09-03')}),
-            new MinimumHourlyWageRevision({prefectureCode: PrefectureCode.Tokyo, hourlyWage: 1163, effectiveDate: LocalDate.fromISO8601('2025-10-03'), publicationDate: LocalDate.fromISO8601('2025-09-03')}),
+            new MinimumHourlyWageRevision({prefectureCode: PrefectureCode.Chiba, hourlyWage: 1140, effectiveDate: LocalDate.fromISO8601('2025-10-03'), publicationDate: LocalDate.fromISO8601('2025-09-03')}),
+            new MinimumHourlyWageRevision({prefectureCode: PrefectureCode.Tokyo, hourlyWage: 1226, effectiveDate: LocalDate.fromISO8601('2025-10-03'), publicationDate: LocalDate.fromISO8601('2025-09-03')}),
             new MinimumHourlyWageRevision({prefectureCode: PrefectureCode.Niigata, hourlyWage: 1050, effectiveDate: LocalDate.fromISO8601('2025-10-02'), publicationDate: LocalDate.fromISO8601('2025-09-02')}),
             new MinimumHourlyWageRevision({prefectureCode: PrefectureCode.Nagano, hourlyWage: 998, effectiveDate: LocalDate.fromISO8601('2025-10-03'), publicationDate: LocalDate.fromISO8601('2025-09-03')}),
         ];
