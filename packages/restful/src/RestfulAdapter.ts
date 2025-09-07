@@ -31,10 +31,10 @@ export abstract class RestfulAdapter<Input,Output> {
             res.status(400).send(responseBody);
         } else if (error instanceof UnexpectedError) {
             this.loggingService.error(error.original);
-            res.status(500);
+            res.status(500).send();
         } else {
             this.loggingService.error(error);
-            res.status(500);
+            res.status(500).send();
         }
     }
 }
