@@ -111,6 +111,7 @@ export class InMemoryDataSource {
             new MinimumHourlyWageRevision({prefectureCode: PrefectureCode.Kanagawa, hourlyWage: 1225, effectiveDate: LocalDate.fromISO8601('2025-10-04'), publicationDate: LocalDate.fromISO8601('2025-09-04')}),
             new MinimumHourlyWageRevision({prefectureCode: PrefectureCode.Niigata, hourlyWage: 1050, effectiveDate: LocalDate.fromISO8601('2025-10-02'), publicationDate: LocalDate.fromISO8601('2025-09-02')}),
             new MinimumHourlyWageRevision({prefectureCode: PrefectureCode.Nagano, hourlyWage: 998, effectiveDate: LocalDate.fromISO8601('2025-10-03'), publicationDate: LocalDate.fromISO8601('2025-09-03')}),
+            new MinimumHourlyWageRevision({prefectureCode: PrefectureCode.Shiga, hourlyWage: 1080, effectiveDate: LocalDate.fromISO8601('2025-10-05'), publicationDate: LocalDate.fromISO8601('2025-09-05')}),
             new MinimumHourlyWageRevision({prefectureCode: PrefectureCode.Hyogo, hourlyWage: 1116, effectiveDate: LocalDate.fromISO8601('2025-10-04'), publicationDate: LocalDate.fromISO8601('2025-09-04')}),
             new MinimumHourlyWageRevision({prefectureCode: PrefectureCode.Nara, hourlyWage: 1051, effectiveDate: LocalDate.fromISO8601('2025-11-16'), publicationDate: LocalDate.fromISO8601('2025-09-04')}),
             new MinimumHourlyWageRevision({prefectureCode: PrefectureCode.Tottori, hourlyWage: 1030, effectiveDate: LocalDate.fromISO8601('2025-10-04'), publicationDate: LocalDate.fromISO8601('2025-09-04')}),
