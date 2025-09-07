@@ -99,7 +99,7 @@ describe('gRPC API', () => {
                 expect(response.getViewsList()[0].getPrefectureCode()).toBe('13');
                 expect(response.getViewsList()[1].getPrefectureCode()).toBe('14');
             });
-            it('準正常系 日付の指定がされない場合はINVALID_ARUGMENT応答', async () => {
+            it('準正常系 日付の指定がされない場合はINVALID_ARGUMENT応答', async () => {
                 const serviceError: ServiceError = await new Promise<ListViewsResponse>((resolve, reject) => {
                     const request = new ListViewsRequest();
                     client.listViews(request, (error, response) => {
@@ -116,7 +116,7 @@ describe('gRPC API', () => {
                 expect(badRequest.getFieldViolationsList()[0].getField()).toBe('date');
                 expect(badRequest.getFieldViolationsList()[0].getDescription()).toBe('日付は必須です');
             });
-            it('準正常系 存在しない日付が指定された場合はINVALID_ARUGMENT応答', async () => {
+            it('準正常系 存在しない日付が指定された場合はINVALID_ARGUMENT応答', async () => {
                 const serviceError: ServiceError = await new Promise<ListViewsResponse>((resolve, reject) => {
                     const request = new ListViewsRequest();
                     request.setDate(createDate({year: 2024, month: 13, day: 31}));
@@ -172,7 +172,7 @@ describe('gRPC API', () => {
                 });
                 expect(response.getStatus()).toBe(HealthCheckResponse.ServingStatus.SERVING);
             });
-            it('準正常系 存在しないサービス名をしているとNOT_FOUND応答', async () => {
+            it('準正常系 存在しないサービス名を指定するとNOT_FOUND応答', async () => {
                 const serviceError: ServiceError = await new Promise<HealthCheckResponse>((resolve, reject) => {
                     const request = new HealthCheckRequest();
                     request.setService('Invalid');
