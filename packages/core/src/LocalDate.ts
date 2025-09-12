@@ -14,6 +14,9 @@ export class LocalDate {
     getComparableNumber(): number {
         return this.dayOfMonth + 100 * this.month + 10000 * this.year;
     }
+    getJapaneseFiscalYear(): number {
+        return this.month < 4 ? this.year - 1 : this.year;
+    }
     static fromYMD(year: number, month: number, dayOfMonth: number) {
         if (!Number.isInteger(year) || year < 0) {
             throw new Error(`年は正の整数で指定してください ${year}`);

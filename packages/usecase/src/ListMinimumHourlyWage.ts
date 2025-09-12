@@ -103,11 +103,11 @@ export class ListMinimumHourlyWageInteractor implements Interactor<ListMinimumHo
     }
 
     async getEffectiveRevisions(targetDate: LocalDate, prefectureCodes: NonEmptyList<PrefectureCode> | null): Promise<MinimumHourlyWageRevision[]> {
-        // 発効日が前年の10月1日から指定日まで取得するが、
+        // 発効日が前年度の10月1日から指定日まで取得するが、
         // 10月以降は同一都道府県で改定前後の最低賃金の定義が重複することがある
         // なので都道府県ごとに最低賃金定義をまとめる
         const candidatesAsMap: Map<PrefectureCode, NonEmptyList<MinimumHourlyWageRevision>> = (await this.minimumHourlyWageRevisionService.list({
-            effectiveDate: new TermBetween({since: LocalDate.fromYMD(targetDate.year -1, 10, 1), until: targetDate}),
+            effectiveDate: new TermBetween({since: LocalDate.fromYMD(targetDate.getJapaneseFiscalYear() - 1, 10, 1), until: targetDate}),
             prefectureCodes: prefectureCodes,
         }))
             .filter((revision) => revision.isEffective(targetDate))
@@ -124,8 +124,8 @@ export class ListMinimumHourlyWageInteractor implements Interactor<ListMinimumHo
                 new Map<PrefectureCode, NonEmptyList<MinimumHourlyWageRevision>>()
             );
         // 最低賃金定義が改定前後で重複した場合は最新のものを使う
-        return Array.from(candidatesAsMap).map((prefectureCodeAndResitionsTupple) => {
-            const revisions = prefectureCodeAndResitionsTupple[1];
+        return Array.from(candidatesAsMap).map((prefectureCodeAndRevisionsTuple) => {
+            const revisions = prefectureCodeAndRevisionsTuple[1];
             return revisions.sort((a, b) => { return (a.effectiveDate.getComparableNumber() < b.effectiveDate.getComparableNumber()) ? 1 : -1})[0];
         });
     }
@@ -143,9 +143,14 @@ export class ListMinimumHourlyWageInteractor implements Interactor<ListMinimumHo
         }
     }
     static getTermOfNextRevision(targetDate: LocalDate): TermBetween | null {
-        const TARGET_MONTHES = [8, 9, 10, 11]; // 改定を気にする必要があるのは8月から11月まで
-        if(TARGET_MONTHES.includes(targetDate.month)) {
-            return new TermBetween({since: LocalDate.fromYMD(targetDate.year, 10, 1), until: LocalDate.fromYMD(targetDate.year, 11, 30)})
+        // ある日付について年度末までに最低賃金の発効日が未来に存在しうる月は8月から3月
+        // 8月~ : 各都道府県で答申が発表され始める
+        // ~3月 : 発効日として最も遅い日 (e.g. 令和7年度秋田県最低賃金の改定の発効日が令和8年3月31日)
+        if(targetDate.month > 7 || targetDate.month < 4) {
+            return new TermBetween({
+                since: targetDate,
+                until: LocalDate.fromYMD(targetDate.getJapaneseFiscalYear() + 1, 3, 31), // 指定日の年度の年度末
+            });
         } else {
             return null;
         }
