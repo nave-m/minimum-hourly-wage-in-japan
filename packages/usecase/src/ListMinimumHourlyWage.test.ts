@@ -93,14 +93,14 @@ describe('ListMinimumHourlyWageInteractor', () => {
             const minimumHourlyWageRevisionService = createMinimumHourlyWageRevisionService();
             minimumHourlyWageRevisionService.list = jest.fn()
                 .mockResolvedValueOnce([
-                    // 昨年の10月1日から2024-10-03現在までに発効となった時給
+                    // 指定日の前年度の10月1日から指定日までに発効となった最低賃金
                     new MinimumHourlyWageRevision({prefectureCode: PrefectureCode.Hokkaido, hourlyWage: 960, effectiveDate: LocalDate.fromISO8601('2023-10-01'), publicationDate: LocalDate.fromISO8601('2023-09-01')}),
                     new MinimumHourlyWageRevision({prefectureCode: PrefectureCode.Aomori, hourlyWage: 898, effectiveDate: LocalDate.fromISO8601('2023-10-07'), publicationDate: LocalDate.fromISO8601('2023-09-07')}),
                     new MinimumHourlyWageRevision({prefectureCode: PrefectureCode.Iwate, hourlyWage: 893, effectiveDate: LocalDate.fromISO8601('2023-10-04'), publicationDate: LocalDate.fromISO8601('2023-09-04') }),
                     new MinimumHourlyWageRevision({prefectureCode: PrefectureCode.Hokkaido, hourlyWage: 1010, effectiveDate: LocalDate.fromISO8601('2024-10-01'), publicationDate: LocalDate.fromISO8601('2024-08-30')}),
                 ])
                 .mockResolvedValueOnce([
-                    // 2024-10-04およびそれよりも未来の改定
+                    // 指定日から指定日の年度末までの改定予定
                     new MinimumHourlyWageRevision({prefectureCode: PrefectureCode.Aomori, hourlyWage: 953, effectiveDate: LocalDate.fromISO8601('2024-10-05'), publicationDate: LocalDate.fromISO8601('2024-08-30')}),
                     new MinimumHourlyWageRevision({prefectureCode: PrefectureCode.Iwate, hourlyWage: 952, effectiveDate: LocalDate.fromISO8601('2024-10-04'), publicationDate: null }),
                 ]);
@@ -130,15 +130,15 @@ describe('ListMinimumHourlyWageInteractor', () => {
                 prefectureCodes: [PrefectureCode.Hokkaido, PrefectureCode.Aomori, PrefectureCode.Iwate],
             });
         });
-        it('改定時期・都道府県絞り込みあり(発効日が翌年)', async () => {
+        it('改定時期・都道府県絞り込みあり(指定日と発効日が年違い)', async () => {
             const minimumHourlyWageRevisionService = createMinimumHourlyWageRevisionService();
             minimumHourlyWageRevisionService.list = jest.fn()
                 .mockResolvedValueOnce([
-                    // 昨年の10月1日から2025-11-03現在までに発効となった時給
+                    // 指定日の前年度の10月1日から指定日までに発効となった最低賃金
                     new MinimumHourlyWageRevision({prefectureCode: PrefectureCode.Gunnma, hourlyWage: 985, effectiveDate: LocalDate.fromISO8601('2024-10-04'), publicationDate: LocalDate.fromISO8601('2024-09-04')}),
                 ])
                 .mockResolvedValueOnce([
-                    // 2025-11-03およびそれよりも未来の改定
+                    // 指定日から指定日の年度末までの改定予定
                     new MinimumHourlyWageRevision({prefectureCode: PrefectureCode.Gunnma, hourlyWage: 1063, effectiveDate: LocalDate.fromISO8601('2026-03-01'), publicationDate: LocalDate.fromISO8601('2025-09-11')}),
                 ]);
             await expect(
@@ -165,15 +165,15 @@ describe('ListMinimumHourlyWageInteractor', () => {
                 prefectureCodes: [PrefectureCode.Gunnma],
             });
         });
-        it('改定時期・都道府県絞り込みあり(発行日が翌年で、指定日も翌年)', async () => {
+        it('改定時期・都道府県絞り込みあり(指定日と発効日ともに翌年)', async () => {
             const minimumHourlyWageRevisionService = createMinimumHourlyWageRevisionService();
             minimumHourlyWageRevisionService.list = jest.fn()
                 .mockResolvedValueOnce([
-                    // 昨年の10月1日から2025-11-03現在までに発効となった時給
+                    // 指定日の前年度の10月1日から指定日までに発効となった最低賃金
                     new MinimumHourlyWageRevision({prefectureCode: PrefectureCode.Gunnma, hourlyWage: 985, effectiveDate: LocalDate.fromISO8601('2024-10-04'), publicationDate: LocalDate.fromISO8601('2024-09-04')}),
                 ])
                 .mockResolvedValueOnce([
-                    // 2025-11-03およびそれよりも未来の改定
+                    // 指定日から指定日の年度末までの改定予定
                     new MinimumHourlyWageRevision({prefectureCode: PrefectureCode.Gunnma, hourlyWage: 1063, effectiveDate: LocalDate.fromISO8601('2026-03-01'), publicationDate: LocalDate.fromISO8601('2025-09-11')}),
                 ]);
             await expect(
