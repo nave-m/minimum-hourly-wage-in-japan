@@ -37,6 +37,20 @@ describe('RESTfulAPI', () => {
             expect(response.body.minimumHourlyWageViews[0].prefectureCode).toBe('13');
             expect(response.body.minimumHourlyWageViews[1].prefectureCode).toBe('14');
         });
+        it('正常系 令和7年度の最低賃金改定で発効日が年をまたぐケース', async () => {
+            const response = await request(app).get('/api/v1/minimumHourlyWageViews?date=2025-09-13');
+            expect(response.statusCode).toBe(200);
+            expect(response.body.minimumHourlyWageViews).toHaveLength(47);
+            expect(response.body.minimumHourlyWageViews[4]).toStrictEqual({
+                prefectureCode: '05',
+                hourlyWage: 951,
+                next: {
+                    hourlyWage: 1031,
+                    effectiveDate: '2026-03-31',
+                    publicationDate: null,
+                },
+            });
+        });
         it('準正常系 日付の指定がされない場合は400応答', async () => {
             const response = await request(app).get('/api/v1/minimumHourlyWageViews');
             expect(response.statusCode).toBe(400);

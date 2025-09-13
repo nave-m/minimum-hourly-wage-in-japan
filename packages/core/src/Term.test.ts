@@ -30,6 +30,7 @@ describe('TermBetween', () => {
             ['sinceと同じ', new TermBetween({since: LocalDate.fromISO8601('2023-10-03'), until: LocalDate.fromISO8601('2024-09-30')}).within(LocalDate.fromISO8601('2023-10-03')), true],
             ['untilと同じ', new TermBetween({since: LocalDate.fromISO8601('2023-10-03'), until: LocalDate.fromISO8601('2024-09-30')}).within(LocalDate.fromISO8601('2024-09-30')), true],
             ['untilよりも後', new TermBetween({since: LocalDate.fromISO8601('2023-10-03'), until: LocalDate.fromISO8601('2024-09-30')}).within(LocalDate.fromISO8601('2024-10-01')), false],
+            ['sinceとuntilと引数が同じ', new TermBetween({since: LocalDate.fromISO8601('2026-03-31'), until: LocalDate.fromISO8601('2026-03-31')}).within(LocalDate.fromISO8601('2026-03-31')), true],
         ])('期間内判定ができる %s', (_, actual, expected) => {
             expect(actual).toBe(expected);
         });

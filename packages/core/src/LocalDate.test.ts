@@ -61,4 +61,16 @@ describe('LocalDate', () => {
             expect(LocalDate.fromYMD(2024, 10, 1).getComparableNumber()).toBe(20241001);
         });
     });
+    describe('getJapaneseFiscalYear', () => {
+       it.each([
+           [LocalDate.fromYMD(2025, 3, 31), 2024],
+           [LocalDate.fromYMD(2025, 4, 1), 2025],
+           [LocalDate.fromYMD(2025, 12, 31), 2025],
+           [LocalDate.fromYMD(2026, 1, 1), 2025],
+           [LocalDate.fromYMD(2026, 3, 31), 2025],
+           [LocalDate.fromYMD(2026, 4, 1), 2026],
+       ])('日本の会計年度(4月始まり・3月終わり)を返す', (localDate, expected) => {
+            expect(localDate.getJapaneseFiscalYear()).toBe(expected);
+       })
+    });
 });

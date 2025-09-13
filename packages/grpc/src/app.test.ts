@@ -63,7 +63,7 @@ describe('gRPC API', () => {
                         } else {
                             reject(error);
                         }
-                    })
+                    });
                 });
                 const actualViews = response.getViewsList();
                 expect(actualViews).toHaveLength(47);
@@ -93,11 +93,31 @@ describe('gRPC API', () => {
                         } else {
                             reject(error);
                         }
-                    })
+                    });
                 });
                 expect(response.getViewsList()).toHaveLength(2);
                 expect(response.getViewsList()[0].getPrefectureCode()).toBe('13');
                 expect(response.getViewsList()[1].getPrefectureCode()).toBe('14');
+            });
+            it('正常系 令和7年度の最低賃金改定で発効日が年をまたぐケース', async () => {
+                const response = await new Promise<ListViewsResponse>((resolve, reject) => {
+                    const request = new ListViewsRequest();
+                    request.setDate(createDate({year: 2025, month: 9, day: 13}));
+                    client.listViews(request, (error, response) => {
+                        if (response) {
+                            resolve(response);
+                        } else {
+                            reject(error);
+                        }
+                    });
+                });
+                expect(response.getViewsList()[4].getPrefectureCode()).toBe('05');
+                expect(response.getViewsList()[4].getHourlyWage()).toBe(951);
+                expect(response.getViewsList()[4].getNext()?.getHourlyWage()).toBe(1031);
+                expect(response.getViewsList()[4].getNext()?.getEffectiveDate()?.getYear()).toBe(2026);
+                expect(response.getViewsList()[4].getNext()?.getEffectiveDate()?.getMonth()).toBe(3);
+                expect(response.getViewsList()[4].getNext()?.getEffectiveDate()?.getDay()).toBe(31);
+                expect(response.getViewsList()[4].getNext()?.getPublicationDate()).toBeUndefined();
             });
             it('準正常系 日付の指定がされない場合はINVALID_ARGUMENT応答', async () => {
                 const serviceError: ServiceError = await new Promise<ListViewsResponse>((resolve, reject) => {
@@ -108,7 +128,7 @@ describe('gRPC API', () => {
                         } else {
                             reject(error);
                         }
-                    })
+                    });
                 }).catch((error) => error);
                 expect(serviceError.code).toBe(Status.INVALID_ARGUMENT);
                 const badRequest = extractBadRequest(serviceError.metadata);    
@@ -126,7 +146,7 @@ describe('gRPC API', () => {
                         } else {
                             reject(error);
                         }
-                    })
+                    });
                 }).catch((error) => error);
                 expect(serviceError.code).toBe(Status.INVALID_ARGUMENT);
                 const badRequest = extractBadRequest(serviceError.metadata);    
@@ -145,7 +165,7 @@ describe('gRPC API', () => {
                         } else {
                             reject(error);
                         }
-                    })    
+                    });
                 }).catch((error) => error);
                 expect(serviceError.code).toBe(Status.INVALID_ARGUMENT);
                 const badRequest = extractBadRequest(serviceError.metadata);    
