@@ -19,24 +19,8 @@ export class ListMinimumHourlyWageInteractor implements Interactor<ListMinimumHo
     async invoke(input: ListMinimumHourlyWageInput): Promise<ListMinimumHourlyWageOutput> {
         try {
             const validatedInput = this.validate(input);
-            const [effectiveRevisions, nextRevisions] = await Promise.all([
-                this.getEffectiveRevisions(validatedInput.date, validatedInput.prefectureCodes),
-                this.getNextRevisions(validatedInput.date, validatedInput.prefectureCodes),
-            ]);
-            return new ListMinimumHourlyWageOutput({
-                minimumHourlyWages: effectiveRevisions.map((effectiveRevision) => {
-                    const mayBeNext = nextRevisions.find((nextRevision) => nextRevision.prefectureCode == effectiveRevision.prefectureCode)
-                    return {
-                        prefectureCode: effectiveRevision.prefectureCode,
-                        hourlyWage: effectiveRevision.hourlyWage,
-                        next: mayBeNext ? {
-                            hourlyWage: mayBeNext.hourlyWage,
-                            effectiveDate: mayBeNext.effectiveDate,
-                            publicationDate: mayBeNext.publicationDate,
-                        } : null,
-                    }
-                })
-            });
+            const minimumHourlyWages = await this.getMinimumHourlyWages(validatedInput);
+            return new ListMinimumHourlyWageOutput({ minimumHourlyWages });
         } catch (e: unknown) {
             if (e instanceof UseCaseError) {
                 throw e;
@@ -102,15 +86,15 @@ export class ListMinimumHourlyWageInteractor implements Interactor<ListMinimumHo
         }
     }
 
-    async getEffectiveRevisions(targetDate: LocalDate, prefectureCodes: NonEmptyList<PrefectureCode> | null): Promise<MinimumHourlyWageRevision[]> {
-        // 発効日が前年度の10月1日から指定日まで取得するが、
-        // 10月以降は同一都道府県で改定前後の最低賃金の定義が重複することがある
-        // なので都道府県ごとに最低賃金定義をまとめる
+    async getMinimumHourlyWages(validatedInput: ValidatedInput): Promise<MinimumHourlyWage[]> {
+        // 最低賃金の改定定義を発効日が前年度の10月1日から当年度の年度末まで取得し、都道府県ごとにまとめる
         const candidatesAsMap: Map<PrefectureCode, NonEmptyList<MinimumHourlyWageRevision>> = (await this.minimumHourlyWageRevisionService.list({
-            effectiveDate: new TermBetween({since: LocalDate.fromYMD(targetDate.getJapaneseFiscalYear() - 1, 10, 1), until: targetDate}),
-            prefectureCodes: prefectureCodes,
+            effectiveDate: new TermBetween({
+                since: LocalDate.fromYMD(validatedInput.date.getJapaneseFiscalYear() - 1, 10, 1),
+                until: LocalDate.fromYMD(validatedInput.date.getJapaneseFiscalYear() + 1, 3, 31),
+            }),
+            prefectureCodes: validatedInput.prefectureCodes,
         }))
-            .filter((revision) => revision.isEffective(targetDate))
             .reduce(
                 (map, revision) => {
                     const mayBeRevisions = map.get(revision.prefectureCode);
@@ -123,37 +107,25 @@ export class ListMinimumHourlyWageInteractor implements Interactor<ListMinimumHo
                 }, 
                 new Map<PrefectureCode, NonEmptyList<MinimumHourlyWageRevision>>()
             );
-        // 最低賃金定義が改定前後で重複した場合は最新のものを使う
         return Array.from(candidatesAsMap).map((prefectureCodeAndRevisionsTuple) => {
+            const prefectureCode = prefectureCodeAndRevisionsTuple[0];
             const revisions = prefectureCodeAndRevisionsTuple[1];
-            return revisions.sort((a, b) => { return (a.effectiveDate.getComparableNumber() < b.effectiveDate.getComparableNumber()) ? 1 : -1})[0];
+            // 指定日現在の最低賃金
+            const effectiveRevision =  revisions
+                .filter((revision) => revision.isEffective(validatedInput.date))
+                .sort((a, b) => { return (a.effectiveDate.getComparableNumber() < b.effectiveDate.getComparableNumber()) ? 1 : -1})[0];
+            // 指定日より後の改定予定
+            const mayBeNextRevision = revisions.find((revision) => !revision.isEffective(validatedInput.date))
+            return {
+                prefectureCode,
+                hourlyWage: effectiveRevision.hourlyWage,
+                next: mayBeNextRevision != null ? {
+                    hourlyWage: mayBeNextRevision.hourlyWage,
+                    effectiveDate: mayBeNextRevision.effectiveDate,
+                    publicationDate: mayBeNextRevision.publicationDate,
+                } : null,
+            };
         });
-    }
-    async getNextRevisions(targetDate: LocalDate, prefectureCodes: NonEmptyList<PrefectureCode> | null): Promise<MinimumHourlyWageRevision[]> {
-        const mayBeEffectiveDateTerm = ListMinimumHourlyWageInteractor.getTermOfNextRevision(targetDate);
-        if (mayBeEffectiveDateTerm != null) {
-            return (
-                await this.minimumHourlyWageRevisionService.list({
-                    effectiveDate: mayBeEffectiveDateTerm,
-                    prefectureCodes: prefectureCodes,
-                })
-            ).filter((revision) => !revision.isEffective(targetDate));
-        } else {
-            return [];
-        }
-    }
-    static getTermOfNextRevision(targetDate: LocalDate): TermBetween | null {
-        // ある日付について年度末までに最低賃金の発効日が未来に存在しうる月は8月から3月
-        // 8月~ : 各都道府県で答申が発表され始める
-        // ~3月 : 発効日として最も遅い日 (e.g. 令和7年度秋田県最低賃金の改定の発効日が令和8年3月31日)
-        if(targetDate.month > 7 || targetDate.month < 4) {
-            return new TermBetween({
-                since: targetDate,
-                until: LocalDate.fromYMD(targetDate.getJapaneseFiscalYear() + 1, 3, 31), // 指定日の年度の年度末
-            });
-        } else {
-            return null;
-        }
     }
 }
 
@@ -167,7 +139,6 @@ export class ListMinimumHourlyWageInput {
         this.date = props.date;
         this.prefectureCodes = props.prefectureCodes;
     }
-    
 }
 
 export class ValidatedInput {
