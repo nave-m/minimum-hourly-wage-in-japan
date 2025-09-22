@@ -117,7 +117,9 @@ describe('gRPC API', () => {
                 expect(response.getViewsList()[4].getNext()?.getEffectiveDate()?.getYear()).toBe(2026);
                 expect(response.getViewsList()[4].getNext()?.getEffectiveDate()?.getMonth()).toBe(3);
                 expect(response.getViewsList()[4].getNext()?.getEffectiveDate()?.getDay()).toBe(31);
-                expect(response.getViewsList()[4].getNext()?.getPublicationDate()).toBeUndefined();
+                expect(response.getViewsList()[4].getNext()?.getPublicationDate()?.getYear()).toBe(2025);
+                expect(response.getViewsList()[4].getNext()?.getPublicationDate()?.getMonth()).toBe(9);
+                expect(response.getViewsList()[4].getNext()?.getPublicationDate()?.getDay()).toBe(22);
             });
             it('準正常系 日付の指定がされない場合はINVALID_ARGUMENT応答', async () => {
                 const serviceError: ServiceError = await new Promise<ListViewsResponse>((resolve, reject) => {

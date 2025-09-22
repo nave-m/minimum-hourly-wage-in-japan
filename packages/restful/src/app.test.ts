@@ -47,7 +47,7 @@ describe('RESTfulAPI', () => {
                 next: {
                     hourlyWage: 1031,
                     effectiveDate: '2026-03-31',
-                    publicationDate: null,
+                    publicationDate: '2025-09-22',
                 },
             });
         });
