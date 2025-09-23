@@ -111,7 +111,7 @@ export class InMemoryDataSource {
             new MinimumHourlyWageRevision({prefectureCode: PrefectureCode.Fukushima, hourlyWage: 1033, effectiveDate: LocalDate.fromISO8601('2026-01-01'), publicationDate: null}),
             new MinimumHourlyWageRevision({prefectureCode: PrefectureCode.Ibaraki, hourlyWage: 1074, effectiveDate: LocalDate.fromISO8601('2025-10-12'), publicationDate: LocalDate.fromISO8601('2025-09-12')}),
             new MinimumHourlyWageRevision({prefectureCode: PrefectureCode.Tochigi, hourlyWage: 1068, effectiveDate: LocalDate.fromISO8601('2025-10-01'), publicationDate: LocalDate.fromISO8601('2025-09-01')}),
-            new MinimumHourlyWageRevision({prefectureCode: PrefectureCode.Gunnma, hourlyWage: 1063, effectiveDate: LocalDate.fromISO8601('2026-03-01'), publicationDate: null}),
+            new MinimumHourlyWageRevision({prefectureCode: PrefectureCode.Gunnma, hourlyWage: 1063, effectiveDate: LocalDate.fromISO8601('2026-03-01'), publicationDate: LocalDate.fromISO8601('2025-09-24')}),
             new MinimumHourlyWageRevision({prefectureCode: PrefectureCode.Saitama, hourlyWage: 1141, effectiveDate: LocalDate.fromISO8601('2025-11-01'), publicationDate: LocalDate.fromISO8601('2025-09-04')}),
             new MinimumHourlyWageRevision({prefectureCode: PrefectureCode.Chiba, hourlyWage: 1140, effectiveDate: LocalDate.fromISO8601('2025-10-03'), publicationDate: LocalDate.fromISO8601('2025-09-03')}),
             new MinimumHourlyWageRevision({prefectureCode: PrefectureCode.Tokyo, hourlyWage: 1226, effectiveDate: LocalDate.fromISO8601('2025-10-03'), publicationDate: LocalDate.fromISO8601('2025-09-03')}),
@@ -148,7 +148,7 @@ export class InMemoryDataSource {
             new MinimumHourlyWageRevision({prefectureCode: PrefectureCode.Oita, hourlyWage: 1035, effectiveDate: LocalDate.fromISO8601('2026-01-01'), publicationDate: null}),
             new MinimumHourlyWageRevision({prefectureCode: PrefectureCode.Miyazaki, hourlyWage: 1023, effectiveDate: LocalDate.fromISO8601('2025-11-16'), publicationDate: null}),
             new MinimumHourlyWageRevision({prefectureCode: PrefectureCode.Kagoshima, hourlyWage: 1026, effectiveDate: LocalDate.fromISO8601('2025-11-01'), publicationDate: null}),
-            new MinimumHourlyWageRevision({prefectureCode: PrefectureCode.Okinawa, hourlyWage: 1023, effectiveDate: LocalDate.fromISO8601('2025-12-01'), publicationDate: null}),
+            new MinimumHourlyWageRevision({prefectureCode: PrefectureCode.Okinawa, hourlyWage: 1023, effectiveDate: LocalDate.fromISO8601('2025-12-01'), publicationDate: LocalDate.fromISO8601('2025-09-24')}),
         ];
     }
 }
