@@ -104,7 +104,7 @@ export class InMemoryDataSource {
             // 2025
             new MinimumHourlyWageRevision({prefectureCode: PrefectureCode.Hokkaido, hourlyWage: 1075, effectiveDate: LocalDate.fromISO8601('2025-10-04'), publicationDate: LocalDate.fromISO8601('2025-09-04')}),
             new MinimumHourlyWageRevision({prefectureCode: PrefectureCode.Aomori, hourlyWage: 1029, effectiveDate: LocalDate.fromISO8601('2025-11-21'), publicationDate: null}),
-            new MinimumHourlyWageRevision({prefectureCode: PrefectureCode.Iwate, hourlyWage: 1031, effectiveDate: LocalDate.fromISO8601('2025-12-01'), publicationDate: null}),
+            new MinimumHourlyWageRevision({prefectureCode: PrefectureCode.Iwate, hourlyWage: 1031, effectiveDate: LocalDate.fromISO8601('2025-12-01'), publicationDate: LocalDate.fromISO8601('2025-09-26')}),
             new MinimumHourlyWageRevision({prefectureCode: PrefectureCode.Miyagi, hourlyWage: 1038, effectiveDate: LocalDate.fromISO8601('2025-10-04'), publicationDate: LocalDate.fromISO8601('2025-09-04')}),
             new MinimumHourlyWageRevision({prefectureCode: PrefectureCode.Akita, hourlyWage: 1031, effectiveDate: LocalDate.fromISO8601('2026-03-31'), publicationDate: LocalDate.fromISO8601('2025-09-22')}),
             new MinimumHourlyWageRevision({prefectureCode: PrefectureCode.Yamagata, hourlyWage: 1032, effectiveDate: LocalDate.fromISO8601('2025-12-23'), publicationDate: null}),
