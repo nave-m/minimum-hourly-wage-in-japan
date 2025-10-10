@@ -137,7 +137,7 @@ export class InMemoryDataSource {
             new MinimumHourlyWageRevision({prefectureCode: PrefectureCode.Okayama, hourlyWage: 1047, effectiveDate: LocalDate.fromISO8601('2025-12-01'), publicationDate: LocalDate.fromISO8601('2025-09-17')}),
             new MinimumHourlyWageRevision({prefectureCode: PrefectureCode.Hiroshima, hourlyWage: 1085, effectiveDate: LocalDate.fromISO8601('2025-11-01'), publicationDate: LocalDate.fromISO8601('2025-09-16')}),
             new MinimumHourlyWageRevision({prefectureCode: PrefectureCode.Yamaguchi, hourlyWage: 1043, effectiveDate: LocalDate.fromISO8601('2025-10-16'), publicationDate: LocalDate.fromISO8601('2025-09-16')}),
-            new MinimumHourlyWageRevision({prefectureCode: PrefectureCode.Tokushima, hourlyWage: 1046, effectiveDate: LocalDate.fromISO8601('2026-01-01'), publicationDate: null}),
+            new MinimumHourlyWageRevision({prefectureCode: PrefectureCode.Tokushima, hourlyWage: 1046, effectiveDate: LocalDate.fromISO8601('2026-01-01'), publicationDate: LocalDate.fromISO8601('2025-10-10')}),
             new MinimumHourlyWageRevision({prefectureCode: PrefectureCode.Kagawa, hourlyWage: 1036, effectiveDate: LocalDate.fromISO8601('2025-10-18'), publicationDate: LocalDate.fromISO8601('2025-09-18')}),
             new MinimumHourlyWageRevision({prefectureCode: PrefectureCode.Ehime, hourlyWage: 1033, effectiveDate: LocalDate.fromISO8601('2025-12-01'), publicationDate: LocalDate.fromISO8601('2025-09-29')}),
             new MinimumHourlyWageRevision({prefectureCode: PrefectureCode.Kochi, hourlyWage: 1023, effectiveDate: LocalDate.fromISO8601('2025-12-01'), publicationDate: LocalDate.fromISO8601('2025-09-29')}),
