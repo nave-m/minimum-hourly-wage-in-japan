@@ -15,7 +15,7 @@
   "license": "MIT",
   "description": "",
   "dependencies": {
-    "@grpc/grpc-js": "^1.12.2",
+    "@grpc/grpc-js": "^1.14.3",
     "grpc-health-check": "^2.0.2",
     "grpc-server-reflection": "^0.1.5"
   },
