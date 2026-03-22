@@ -2,7 +2,7 @@
 const config = {
   testEnvironment: "node",
   transform: {
-    "^.+.tsx?$": ["ts-jest",{}],
+    "^.+\\.(t|j)sx?$": "@swc/jest",
   },
 };
 
