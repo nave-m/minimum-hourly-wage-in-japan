@@ -1,8 +1,9 @@
-/* global module */
 /** @type {import('ts-jest').JestConfigWithTsJest} **/
-module.exports = {
+const config = {
   testEnvironment: "node",
   transform: {
     "^.+.tsx?$": ["ts-jest",{}],
   },
 };
+
+export default config;

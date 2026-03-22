@@ -21,7 +21,7 @@ class DummyAdapter extends ServerUraryCallAdapter<DummyInput, DummyOutput, Healt
         return {};
     }
     override sendResponse() {
-
+        // 何もしない
     }
 }
 

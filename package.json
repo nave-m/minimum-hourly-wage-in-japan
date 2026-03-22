@@ -5,11 +5,11 @@
   "main": "index.js",
   "scripts": {
     "typecheck": "tsc --noEmit",
-    "lint": "eslint .",
+    "lint": "npx @biomejs/biome lint",
     "test": "jest",
-    "build:restful": "npm run build -w packages/restful", 
+    "build:restful": "npm run build -w packages/restful",
     "restful": "npm start -w packages/restful",
-    "build:grpc": "npm run build -w packages/grpc", 
+    "build:grpc": "npm run build -w packages/grpc",
     "grpc": "npm start -w packages/grpc"
   },
   "workspaces": [
@@ -24,10 +24,8 @@
   "license": "MIT",
   "private": true,
   "devDependencies": {
-    "@eslint/js": "^9.10.0",
-    "@types/eslint__js": "^8.42.3",
+    "@biomejs/biome": "2.4.8",
     "@types/jest": "^29.5.12",
-    "eslint": "^9.10.0",
     "jest": "^29.7.0",
     "regenerator-runtime": "^0.14.1",
     "ts-jest": "^29.2.5",
