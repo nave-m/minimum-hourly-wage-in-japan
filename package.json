@@ -30,7 +30,6 @@
     "@types/jest": "^30.0.0",
     "jest": "^30.3.0",
     "regenerator-runtime": "^0.14.1",
-    "typescript": "^5.5.4",
-    "typescript-eslint": "^8.4.0"
+    "typescript": "^5.5.4"
   }
 }
