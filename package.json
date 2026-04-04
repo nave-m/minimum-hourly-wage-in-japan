@@ -31,5 +31,10 @@
     "jest": "^30.3.0",
     "regenerator-runtime": "^0.14.1",
     "typescript": "^5.5.4"
+  },
+  "overrides": {
+    "grpc_tools_node_protoc_ts": {
+      "handlebars": "4.7.9"
+    }
   }
 }
