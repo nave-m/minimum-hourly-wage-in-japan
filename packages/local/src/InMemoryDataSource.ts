@@ -172,7 +172,10 @@ export class InMemoryDataSource {
             new MinimumHourlyWageRevision({prefectureCode: PrefectureCode.Nara, hourlyWage: 1107, effectiveDate: LocalDate.fromISO8601('2026-10-04'), publicationDate: LocalDate.fromISO8601('2026-09-04')}),
             new MinimumHourlyWageRevision({prefectureCode: PrefectureCode.Wakayama, hourlyWage: 1101, effectiveDate: LocalDate.fromISO8601('2026-10-03'), publicationDate: LocalDate.fromISO8601('2026-09-03')}),
             new MinimumHourlyWageRevision({prefectureCode: PrefectureCode.Tottori, hourlyWage: 1090, effectiveDate: LocalDate.fromISO8601('2026-10-03'), publicationDate: LocalDate.fromISO8601('2026-09-03')}),
+            new MinimumHourlyWageRevision({prefectureCode: PrefectureCode.Shimane, hourlyWage: 1092, effectiveDate: LocalDate.fromISO8601('2026-10-10'), publicationDate: LocalDate.fromISO8601('2026-09-10') }),
             new MinimumHourlyWageRevision({prefectureCode: PrefectureCode.Okayama, hourlyWage: 1104, effectiveDate: LocalDate.fromISO8601('2026-10-02'), publicationDate: LocalDate.fromISO8601('2026-09-02') }),
+            new MinimumHourlyWageRevision({prefectureCode: PrefectureCode.Hiroshima, hourlyWage: 1141, effectiveDate: LocalDate.fromISO8601('2026-10-11'), publicationDate: LocalDate.fromISO8601('2026-09-11') }),
+            new MinimumHourlyWageRevision({prefectureCode: PrefectureCode.Yamaguchi, hourlyWage: 1101, effectiveDate: LocalDate.fromISO8601('2026-10-08'), publicationDate: LocalDate.fromISO8601('2026-09-08') }),
             new MinimumHourlyWageRevision({prefectureCode: PrefectureCode.Kagawa, hourlyWage: 1092, effectiveDate: LocalDate.fromISO8601('2026-10-01'), publicationDate: LocalDate.fromISO8601('2026-09-01') }),
             new MinimumHourlyWageRevision({prefectureCode: PrefectureCode.Fukuoka, hourlyWage: 1114, effectiveDate: LocalDate.fromISO8601('2026-10-04'), publicationDate: LocalDate.fromISO8601('2026-09-04')}),
         ];
